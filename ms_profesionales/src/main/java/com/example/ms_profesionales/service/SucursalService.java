@@ -1,7 +1,6 @@
 package com.example.ms_profesionales.service;
 import java.util.List;
 import java.util.Optional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
@@ -18,11 +17,14 @@ import jakarta.transaction.Transactional;
 @Transactional
 public class SucursalService {
 
-    @Autowired
-    private SucursalRepository sucursalRepository;
+    private final SucursalRepository sucursalRepository;
 
-    @Autowired 
-    private ComunaRepository comunaRepository;
+    private final ComunaRepository comunaRepository;
+
+    SucursalService(SucursalRepository sucursalRepository, ComunaRepository comunaRepository) {
+        this.sucursalRepository = sucursalRepository;
+        this.comunaRepository = comunaRepository;
+    }
 
     public List<SucursalDTO> obtenerTodos() {
     return sucursalRepository.findAll().stream()

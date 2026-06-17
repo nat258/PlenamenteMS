@@ -1,7 +1,6 @@
 package com.example.ms_profesionales.service;
 
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
@@ -15,8 +14,11 @@ import jakarta.transaction.Transactional;
 @Transactional
 public class RegionService {
 
-    @Autowired
-    private RegionRepository regionRepository;
+    private final RegionRepository regionRepository;
+
+    RegionService(RegionRepository regionRepository) {
+        this.regionRepository = regionRepository;
+    }
 
     public List<RegionDTO> obtenerTodos() {
         return regionRepository.findAll().stream()

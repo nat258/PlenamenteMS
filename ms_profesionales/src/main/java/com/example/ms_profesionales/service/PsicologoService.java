@@ -1,7 +1,6 @@
 package com.example.ms_profesionales.service;
 
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.ms_profesionales.DTO.PsicologoDTO;
@@ -14,8 +13,11 @@ import jakarta.transaction.Transactional;
 @Transactional
 public class PsicologoService {
 
-    @Autowired
-    private PsicologoRepository psicologoRepository;
+    private final PsicologoRepository psicologoRepository;
+
+    PsicologoService(PsicologoRepository psicologoRepository) {
+        this.psicologoRepository = psicologoRepository;
+    }
 
     public String eliminarPsicologo(Integer id) {
         try {

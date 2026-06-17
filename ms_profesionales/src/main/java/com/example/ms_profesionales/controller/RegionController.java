@@ -1,6 +1,5 @@
 package com.example.ms_profesionales.controller;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,8 +14,11 @@ import com.example.ms_profesionales.service.RegionService;
 @CrossOrigin(origins = "*")
 public class RegionController {
 
-    @Autowired
-    private RegionService regionService;
+    private final RegionService regionService;
+
+    RegionController(RegionService regionService) {
+        this.regionService = regionService;
+    }
 
     @GetMapping
     public ResponseEntity<List<RegionDTO>> obtenerTodas() {

@@ -1,6 +1,5 @@
 package com.example.ms_profesionales.service;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.ms_profesionales.DTO.ComunaDTO;
@@ -12,8 +11,11 @@ import jakarta.transaction.Transactional;
 @Transactional
 public class ComunaService {
 
-    @Autowired
-    private ComunaRepository comunaRepository;
+    private final ComunaRepository comunaRepository;
+
+    ComunaService(ComunaRepository comunaRepository) {
+        this.comunaRepository = comunaRepository;
+    }
 
     public String eliminarComuna(Integer id) {
         try {
