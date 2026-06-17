@@ -2,6 +2,7 @@ package com.example.ms_pacientes.model;
 
 import java.util.List;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,6 +26,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "paciente")
+@Schema(description = "Entidad que representa un paciente, con su ID, RUT, nombre, apellido, correo, número telefónico, dirección y su relación con los historiales de diagnóstico, reservas de horas y previsión médica.")
 public class Paciente {
 
     @Id
@@ -59,7 +61,7 @@ public class Paciente {
     @NotNull(message = "El numero telefonico es obligatorio!")
     @Min(value = 900000000, message = "El numero telefonico debe contener 9 caracteres!)")
     @Max(value = 999999999, message = "El numero telefonico debe contener 9 caracteres!)")
-    private Integer numero;
+    private String numero;
 
     @NotBlank(message = "La direccion es obligatoria!")
     private String direccion;

@@ -2,6 +2,7 @@ package com.example.ms_pacientes.model;
 
 import java.time.LocalDate;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,6 +21,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "historialDiagnostico")
+@Schema(description = "Entidad que representa el historial de diagnóstico de un paciente, con su fecha, observación y su relación con el paciente y el diagnóstico correspondiente.")
 public class HistorialDiagnostico {
 
     @Id

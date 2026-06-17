@@ -2,7 +2,6 @@ package com.example.ms_pacientes.service;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.ms_pacientes.DTO.PrevisionDTO;
@@ -15,15 +14,17 @@ import jakarta.transaction.Transactional;
 @Transactional
 public class PrevisionService {
 
-    @Autowired
-    private PrevisionRepository previsionRepositary;
+    private final PrevisionRepository previsionRepository;
 
-    
+    PrevisionService(PrevisionRepository previsionRepository) {
+        this.previsionRepository = previsionRepository;
+    }
+
     public String eliminarPrevision(Integer id) {
         try {
-        Prevision prevision = previsionRepositary.findById(id)
+        Prevision prevision = previsionRepository.findById(id)
                     .orElseThrow(() -> new RuntimeException("Previsión no encontrada con el ID: " + id));
-            previsionRepositary.delete(prevision);
+            previsionRepository.delete(prevision);
             return "Prevision eliminada con éxito";
         } catch (Exception e) {
             return e.getMessage();
@@ -33,33 +34,33 @@ public class PrevisionService {
     public Prevision guardarPrevision(Prevision prevision) {
         validarPrevision(prevision);
         
-        if (!previsionRepositary.findByTipo(prevision.getTipo()).isEmpty()) {
+        if (!previsionRepository.findByTipo(prevision.getTipo()).isEmpty()) {
             throw new RuntimeException("La previsión '" + prevision.getTipo() + "' ya existe.");
         }
         
-        return previsionRepositary.save(prevision);
+        return previsionRepository.save(prevision);
     }
 
     public Prevision actualizarPrevision(Integer id, Prevision previsionActualizada) {
-        Prevision previsionExistente = previsionRepositary.findById(id)
+        Prevision previsionExistente = previsionRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Previsión no encontrada con ID: " + id));
 
         validarPrevision(previsionActualizada);
         previsionExistente.setTipo(previsionActualizada.getTipo());
         
-        return previsionRepositary.save(previsionExistente);
+        return previsionRepository.save(previsionExistente);
     }
 
     //DTO
     public List<PrevisionDTO> obtenerTodosLasPrevisiones(){
-            return previsionRepositary.findAll().stream()
+            return previsionRepository.findAll().stream()
                     .map(this::convertirADTO)
                     .toList();
         }
 
 
     public PrevisionDTO buscarPrevisionPorId(Integer id){
-        Prevision prevision = previsionRepositary.findById(id)
+        Prevision prevision = previsionRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Previsión no encontrada con ID: " + id));
         return convertirADTO(prevision);
     }

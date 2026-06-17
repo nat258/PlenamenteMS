@@ -2,6 +2,7 @@ package com.example.ms_pacientes.model;
 
 import java.util.List;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -19,6 +20,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "diagnostico")
+@Schema(description = "Entidad que representa un diagnóstico médico, con su nombre, descripción y su relación con los historiales de diagnóstico.")
 public class Diagnostico {
 
     @Id

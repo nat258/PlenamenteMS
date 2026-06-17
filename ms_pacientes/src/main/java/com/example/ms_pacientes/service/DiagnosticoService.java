@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
@@ -18,8 +17,12 @@ import jakarta.transaction.Transactional;
 @Transactional
 public class DiagnosticoService {
 
-    @Autowired
-    DiagnosticoRepository diagnosticoRepository;
+    final DiagnosticoRepository diagnosticoRepository;
+
+
+    DiagnosticoService(DiagnosticoRepository diagnosticoRepository) {
+        this.diagnosticoRepository = diagnosticoRepository;
+    }
 
 
     //OBTENER TODOS LOS DIAGNOSTICOS

@@ -3,7 +3,6 @@ package com.example.ms_pacientes.controller;
 import java.time.LocalDate;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +20,10 @@ import com.example.ms_pacientes.model.HistorialDiagnostico;
 import com.example.ms_pacientes.service.HistorialDiagnosticoService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
@@ -29,11 +32,20 @@ import jakarta.validation.Valid;
 @Tag(name = "Historiales Diagnosticos", description = "Operaciones relacionadas a Historiales de diagnosticos")
 public class HistorialDiagnosticoController {
 
-    @Autowired
-    private HistorialDiagnosticoService historialService;
+    private final HistorialDiagnosticoService historialService;
+
+    HistorialDiagnosticoController(HistorialDiagnosticoService historialService) {
+        this.historialService = historialService;
+    }
 
     @GetMapping
     @Operation(summary = "Muestra todos el historial de diagnosticos", description = "Muestra todos el historial de diagnosticos.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Historiales de diagnosticos encontrados",
+                content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = HistorialDiagnosticoDTO.class))),
+            @ApiResponse(responseCode = "204", description = "No se encontraron historiales de diagnosticos")
+    })
     public ResponseEntity<List<HistorialDiagnosticoDTO>> obtenerTodos() {
         List<HistorialDiagnosticoDTO> lista = historialService.obtenerTodos();
         if (lista.isEmpty()) {
@@ -44,6 +56,12 @@ public class HistorialDiagnosticoController {
 
     @PostMapping
     @Operation(summary = "Guarda el historial de diagnosticos", description = "Guarda el historial de diagnosticos.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Historial de diagnosticos creado",
+                content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = HistorialDiagnosticoDTO.class))),
+            @ApiResponse(responseCode = "400", description = "Solicitud incorrecta")
+    })
     public ResponseEntity<?> guardarHistorial(@Valid @RequestBody HistorialDiagnostico historial) {
         try {
             HistorialDiagnosticoDTO nuevo = historialService.guardarHistorial(historial);
@@ -55,6 +73,13 @@ public class HistorialDiagnosticoController {
 
     @PutMapping("/{id}")
     @Operation(summary = "Actualiza el historial de diagnosticos mediante el id", description = "Actualiza el historial de diagnosticos mediante el id.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Historial de diagnosticos actualizado",
+                content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = HistorialDiagnosticoDTO.class))),
+            @ApiResponse(responseCode = "404", description = "Historial de diagnosticos no encontrado"),
+            @ApiResponse(responseCode = "400", description = "Solicitud incorrecta")
+    })
     public ResponseEntity<?> actualizarHistorial(@PathVariable Integer id, @RequestBody HistorialDiagnostico historial) {
         try {
             HistorialDiagnosticoDTO actualizado = historialService.actualizarHistorial(id, historial);
@@ -66,6 +91,13 @@ public class HistorialDiagnosticoController {
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Elimina historial de diagnosticos por su id", description = "Elimina el historial de diagnosticos por el id.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Historial de diagnosticos eliminado",
+                content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = HistorialDiagnosticoDTO.class))),
+            @ApiResponse(responseCode = "404", description = "Historial de diagnosticos no encontrado"),
+            @ApiResponse(responseCode = "400", description = "Solicitud incorrecta")
+    })
     public ResponseEntity<String> eliminarHistorial(@PathVariable Integer id) {
         String mensaje = historialService.eliminarHistorial(id);
         if (mensaje.contains("no se encuentra registrado")) {
@@ -80,6 +112,12 @@ public class HistorialDiagnosticoController {
 
     @GetMapping("/paciente/{id}")
     @Operation(summary = "Muestra y busca todo el historial de diagnosticos por el id del paciente", description = "Muestra y busca todo el historial de diagnosticos por el id del paciente.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Historiales de diagnosticos encontrados",
+                content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = HistorialDiagnosticoDTO.class))),
+            @ApiResponse(responseCode = "204", description = "No se encontraron historiales de diagnosticos")
+    })
     public ResponseEntity<?> buscarPorPaciente(@PathVariable Integer id) {
         try {
             List<HistorialDiagnosticoDTO> ficha = historialService.diagnosticoPorIdPaciente(id);
@@ -95,6 +133,12 @@ public class HistorialDiagnosticoController {
 
     @GetMapping("/diagnostico/{id}")
     @Operation(summary = "Busca y muestra el historial de diagnosticos por el id de diagnostico", description = "Busca y muestra el historial de diagnosticos por el id de diagnostico.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Historial de diagnosticos encontrado",
+                content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = HistorialDiagnosticoDTO.class))),
+            @ApiResponse(responseCode = "204", description = "No se encontró el historial de diagnosticos")
+    })
     public ResponseEntity<Object> buscarPorDiagnostico(@PathVariable Integer id) {
         try {
             Integer idHistorial = historialService.buscarIdPorDiagnostico(id);
@@ -112,6 +156,12 @@ public class HistorialDiagnosticoController {
 
     @GetMapping("/fecha/{fecha}")
     @Operation(summary = "Busca y muestra historial de diagnosticos por la fecha", description = "Muestra y busca el historial de diagnosticos por la fecha.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Historial de diagnosticos encontrado",
+                content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = HistorialDiagnosticoDTO.class))),
+            @ApiResponse(responseCode = "204", description = "No se encontró el historial de diagnosticos")
+    })
     public ResponseEntity<?> buscarPorFecha(@PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha) {
         try {
             List<HistorialDiagnosticoDTO> resultados = historialService.buscarPorFecha(fecha);

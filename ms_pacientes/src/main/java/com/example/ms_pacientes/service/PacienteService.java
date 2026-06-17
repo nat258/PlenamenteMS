@@ -3,7 +3,6 @@ package com.example.ms_pacientes.service;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.ms_pacientes.DTO.PacienteDTO;
@@ -16,8 +15,12 @@ import jakarta.transaction.Transactional;
 @Transactional
 public class PacienteService {
     
-    @Autowired
-    private PacienteRepository pacienteRepository;
+    private final PacienteRepository pacienteRepository;
+
+
+    PacienteService(PacienteRepository pacienteRepository) {
+        this.pacienteRepository = pacienteRepository;
+    }
 
 
     public String eliminarPacientePorRut(String rut) {
