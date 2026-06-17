@@ -24,10 +24,11 @@ public class Comuna {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_comuna")
     private Integer id;
  
     @NotBlank(message = "El nombre de comuna no puede estar vacio!")
-    @Column(unique = true)
+    @Column(name = "nombre_comuna", nullable = false)
     private String nombre;
 
     @ManyToOne
