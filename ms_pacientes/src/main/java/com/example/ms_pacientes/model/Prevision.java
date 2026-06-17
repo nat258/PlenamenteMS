@@ -2,6 +2,7 @@ package com.example.ms_pacientes.model;
 
 import java.util.List;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,6 +19,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "prevision")
+@Schema(description = "Entidad que representa la previsión médica de un paciente, con su tipo y su relación con los pacientes que tienen esa previsión.")
 public class Prevision {
 
     @Id

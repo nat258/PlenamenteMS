@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
@@ -19,11 +18,14 @@ import jakarta.transaction.Transactional;
 @Transactional
 public class HistorialDiagnosticoService {
 
-    @Autowired
-    private HistorialDiagnosticoRepository historialDiagnosticoRepository;
+    private final HistorialDiagnosticoRepository historialDiagnosticoRepository;
 
-    @Autowired
-    private PacienteRepository pacienteRepository;
+    private final PacienteRepository pacienteRepository;
+
+    HistorialDiagnosticoService(HistorialDiagnosticoRepository historialDiagnosticoRepository, PacienteRepository pacienteRepository) {
+        this.historialDiagnosticoRepository = historialDiagnosticoRepository;
+        this.pacienteRepository = pacienteRepository;
+    }
 
     public List<HistorialDiagnosticoDTO> obtenerTodos() {
         List<HistorialDiagnosticoDTO> listaDTOs = new ArrayList<>();
