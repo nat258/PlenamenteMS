@@ -12,7 +12,6 @@ public class SucursalDTO {
     private Integer id;
     private String nombre;
     private String direccion;
-    
     private Integer comunaId;
     private String comunaNombre;
 

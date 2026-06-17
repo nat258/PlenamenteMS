@@ -23,23 +23,36 @@ public class PsicologoController {
     @Autowired
     private PsicologoService psicologoService;
 
-    //Obtener todos
+    //Obtener todos los psicologos
     @GetMapping
     public ResponseEntity<List<PsicologoDTO>> obtenerTodos() {
         return ResponseEntity.ok(psicologoService.obtenerTodosLosPsicologos());
     }
 
+    //Obtener por id
     @GetMapping("/{id}")
-    public ResponseEntity<Object> obtenerPorRut(@PathVariable Integer id) {
-        try {
+    public ResponseEntity<Object> obtenerPorId(@PathVariable Integer id){
+        try{
             PsicologoDTO psicologo = psicologoService.buscarPsicologoPorId(id);
+            return new ResponseEntity<>(psicologo, HttpStatus.OK);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        
+        }
+    }
+
+    //Obtener por rut 
+    @GetMapping("/rut/{rut}")
+    public ResponseEntity<Object> obtenerPorRut(@PathVariable String rut) {
+        try {
+            PsicologoDTO psicologo = psicologoService.buscarPsicologoPorRut(rut);
             return new ResponseEntity<>(psicologo, HttpStatus.OK);
         } catch (RuntimeException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 
-    //Guardar
+    //Guardar nuevo psicologo
     @PostMapping
     public ResponseEntity<Object> agregarPsicologo(@RequestBody Psicologo psicologo) {
         try {
@@ -50,7 +63,7 @@ public class PsicologoController {
         }
     }
 
-    //Actualizar por RUT
+    //Actualizar por id
     @PutMapping("/{id}")
     public ResponseEntity<Object> actualizarPsicologo(@PathVariable Integer id, @RequestBody Psicologo psicologo) {
         try {
@@ -60,10 +73,11 @@ public class PsicologoController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
-    @DeleteMapping("/{rut}")
+    //Eliminar por id
+    @DeleteMapping("/{id}")
     public ResponseEntity<String> eliminarPsicologo(@PathVariable Integer id) {
         String resultado = psicologoService.eliminarPsicologo(id);
-        if (resultado.contains("éxito")) {
+        if (resultado.contains("Se ha eliminado con éxito el psicólogo")) {
             return new ResponseEntity<>(resultado, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(resultado, HttpStatus.NOT_FOUND);
