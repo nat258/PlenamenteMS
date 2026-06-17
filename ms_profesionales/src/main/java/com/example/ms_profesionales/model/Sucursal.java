@@ -1,5 +1,7 @@
 package com.example.ms_profesionales.model;
 import java.util.List;
+
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,6 +20,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "sucursal")
+@Schema(description = "Entidad que representa una sucursal, la cual puede contener varios psicólogos asociados y pertenece a una comuna.")
 
 public class Sucursal {
 

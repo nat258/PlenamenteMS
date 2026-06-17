@@ -15,6 +15,7 @@ import com.example.ms_profesionales.DTO.ComunaDTO;
 import com.example.ms_profesionales.service.ComunaService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
@@ -31,6 +32,8 @@ public class ComunaController {
     //Busqueda por Id 
     @GetMapping("/{id}")
     @Operation(summary = "Buscar comuna por ID", description = "Obtiene una comuna específica utilizando su ID único.")
+    @ApiResponse(responseCode = "200", description = "Comuna encontrada exitosamente")
+    @ApiResponse(responseCode = "404", description = "Comuna no encontrada")
     public ResponseEntity<?> buscarPorId(@PathVariable Integer id) {
         try {
             ComunaDTO comunaDTO = comunaService.buscarPorId(id);
@@ -43,6 +46,8 @@ public class ComunaController {
     //Busqueda por Nombre.
     @GetMapping("/nombre/{nombre}")
     @Operation(summary = "Buscar comuna por nombre", description = "Obtiene una o más comunas específicas utilizando su nombre.")
+    @ApiResponse(responseCode = "200", description = "Comunas encontradas exitosamente")
+    @ApiResponse(responseCode = "404", description = "Comunas no encontradas")
     public ResponseEntity<?> buscarPorNombre(@PathVariable String nombre) {
         try {
             // Como tu service devuelve una List<ComunaDTO>, aquí enviamos la lista completa
@@ -57,6 +62,8 @@ public class ComunaController {
     //Busqueda por palabras que contenga el nombre 
     @GetMapping("/nombrePar/{nombre}")
     @Operation(summary = "Buscar comuna por nombre parcial", description = "Obtiene una o más comunas específicas utilizando una parte de su nombre.")
+    @ApiResponse(responseCode = "200", description = "Comunas encontradas exitosamente")
+    @ApiResponse(responseCode = "404", description = "Comunas no encontradas")
     public ResponseEntity<?> buscarPorNombreParcial(@PathVariable String nombre) {
         try {
             List<ComunaDTO> listaResultados = comunaService.buscarPorNombreParcial(nombre);
@@ -69,6 +76,8 @@ public class ComunaController {
     //Registrar nueva comuna 
     @PostMapping
     @Operation(summary = "Registrar nueva comuna", description = "Crea una nueva comuna utilizando los datos proporcionados en el cuerpo de la solicitud.")
+    @ApiResponse(responseCode = "201", description = "Comuna registrada exitosamente")
+    @ApiResponse(responseCode = "400", description = "Datos de la comuna inválidos")
     public ResponseEntity<?> registrarComuna(@RequestBody ComunaDTO comunaDTO) {
         try {
             ComunaDTO nuevaComuna = comunaService.registrarComuna(comunaDTO);
@@ -81,6 +90,8 @@ public class ComunaController {
     //Eliminar comuna 
     @DeleteMapping("/{id}")
     @Operation(summary = "Eliminar comuna", description = "Elimina una comuna específica utilizando su ID único.")
+    @ApiResponse(responseCode = "200", description = "Comuna eliminada exitosamente")
+    @ApiResponse(responseCode = "404", description = "Comuna no encontrada")
     public ResponseEntity<String> eliminarComuna(@PathVariable Integer id) {
         String mensaje = comunaService.eliminarComuna(id);
         if (mensaje.contains("éxito")) {

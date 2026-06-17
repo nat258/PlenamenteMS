@@ -16,6 +16,7 @@ import com.example.ms_profesionales.model.Psicologo;
 import com.example.ms_profesionales.service.PsicologoService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
@@ -32,6 +33,7 @@ public class PsicologoController {
     //Obtener todos los psicologos
     @GetMapping
     @Operation(summary = "Obtener todos los psicólogos", description = "Obtiene una lista de todos los psicólogos registrados.")
+    @ApiResponse(responseCode = "200", description = "Psicólogos obtenidos exitosamente")   
     public ResponseEntity<List<PsicologoDTO>> obtenerTodos() {
         return ResponseEntity.ok(psicologoService.obtenerTodosLosPsicologos());
     }
@@ -39,6 +41,8 @@ public class PsicologoController {
     //Obtener por id
     @GetMapping("/{id}")
     @Operation(summary = "Obtener psicólogo por ID", description = "Obtiene un psicólogo específico utilizando su ID único.")
+    @ApiResponse(responseCode = "200", description = "Psicólogo encontrado exitosamente")
+    @ApiResponse(responseCode = "404", description = "Psicólogo no encontrado")
     public ResponseEntity<Object> obtenerPorId(@PathVariable Integer id){
         try{
             PsicologoDTO psicologo = psicologoService.buscarPsicologoPorId(id);
@@ -51,6 +55,9 @@ public class PsicologoController {
 
     //Obtener por rut 
     @GetMapping("/rut/{rut}")
+    @Operation(summary = "Obtener psicólogo por RUT", description = "Obtiene un psicólogo específico utilizando su RUT único.")
+    @ApiResponse(responseCode = "200", description = "Psicólogo encontrado exitosamente")
+    @ApiResponse(responseCode = "404", description = "Psicólogo no encontrado")
     public ResponseEntity<Object> obtenerPorRut(@PathVariable String rut) {
         try {
             PsicologoDTO psicologo = psicologoService.buscarPsicologoPorRut(rut);
@@ -63,6 +70,8 @@ public class PsicologoController {
     //Guardar nuevo psicologo
     @PostMapping
     @Operation(summary = "Registrar nuevo psicólogo", description = "Crea un nuevo psicólogo utilizando los datos proporcionados en el cuerpo de la solicitud.")
+    @ApiResponse(responseCode = "201", description = "Psicólogo registrado exitosamente")
+    @ApiResponse(responseCode = "400", description = "Datos del psicólogo inválidos")
     public ResponseEntity<Object> agregarPsicologo(@RequestBody Psicologo psicologo) {
         try {
             Psicologo guardado = psicologoService.guardarPsicologo(psicologo);
@@ -75,6 +84,8 @@ public class PsicologoController {
     //Actualizar por id
     @PutMapping("/{id}")
     @Operation(summary = "Actualizar psicólogo", description = "Actualiza los datos de un psicólogo específico utilizando su ID único.")
+    @ApiResponse(responseCode = "200", description = "Psicólogo actualizado exitosamente")
+    @ApiResponse(responseCode = "404", description = "Psicólogo no encontrado")
     public ResponseEntity<Object> actualizarPsicologo(@PathVariable Integer id, @RequestBody Psicologo psicologo) {
         try {
             Psicologo editado = psicologoService.actualizarPsicologo(id, psicologo);
@@ -85,6 +96,9 @@ public class PsicologoController {
     }
     //Eliminar por id
     @DeleteMapping("/{id}")
+    @Operation(summary = "Eliminar psicólogo", description = "Elimina un psicólogo específico utilizando su ID único.")
+    @ApiResponse(responseCode = "200", description = "Psicólogo eliminado exitosamente")
+    @ApiResponse(responseCode = "404", description = "Psicólogo no encontrado")
     public ResponseEntity<String> eliminarPsicologo(@PathVariable Integer id) {
         String resultado = psicologoService.eliminarPsicologo(id);
         if (resultado.contains("Se ha eliminado con éxito el psicólogo")) {
