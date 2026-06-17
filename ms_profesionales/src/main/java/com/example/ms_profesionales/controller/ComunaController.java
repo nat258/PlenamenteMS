@@ -1,7 +1,6 @@
 package com.example.ms_profesionales.controller;
 
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,8 +17,11 @@ import com.example.ms_profesionales.service.ComunaService;
 @RequestMapping("/api/v1/comunas")
 public class ComunaController {
 
-    @Autowired
-    private ComunaService comunaService;
+    private final ComunaService comunaService;
+
+    ComunaController(ComunaService comunaService) {
+        this.comunaService = comunaService;
+    }
 
     //Busqueda por Id 
     @GetMapping("/{id}")

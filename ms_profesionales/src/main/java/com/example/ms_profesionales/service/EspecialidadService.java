@@ -1,7 +1,6 @@
 package com.example.ms_profesionales.service;
 
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.ms_profesionales.DTO.EspecialidadDTO;
@@ -14,8 +13,11 @@ import jakarta.transaction.Transactional;
 @Transactional
 public class EspecialidadService {
 
-    @Autowired
-    private EspecialidadRepository especialidadRepository;
+    private final EspecialidadRepository especialidadRepository;
+
+    EspecialidadService(EspecialidadRepository especialidadRepository) {
+        this.especialidadRepository = especialidadRepository;
+    }
 
     // Buscar por coincidencia parcial al tipo de especialidad .
     public List<EspecialidadDTO> buscarPorNombreParcial(String nombre) {

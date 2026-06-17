@@ -2,11 +2,9 @@ package com.example.ms_profesionales.repository;
 
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
 import com.example.ms_profesionales.model.Comuna;
 
-@Repository
 public interface ComunaRepository extends JpaRepository<Comuna,Integer> {
     
     // Busqueda de comuna por nombre exacto

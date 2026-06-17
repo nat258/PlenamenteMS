@@ -1,6 +1,5 @@
 package com.example.ms_profesionales.controller;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,8 +19,11 @@ import com.example.ms_profesionales.service.PsicologoService;
 @RequestMapping("/api/v1/psicologos")
 public class PsicologoController {
 
-    @Autowired
-    private PsicologoService psicologoService;
+    private final PsicologoService psicologoService;
+
+    PsicologoController(PsicologoService psicologoService) {
+        this.psicologoService = psicologoService;
+    }
 
     //Obtener todos los psicologos
     @GetMapping

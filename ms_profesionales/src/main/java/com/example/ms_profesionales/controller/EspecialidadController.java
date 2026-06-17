@@ -1,6 +1,5 @@
 package com.example.ms_profesionales.controller;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,8 +17,11 @@ import com.example.ms_profesionales.service.EspecialidadService;
 @RequestMapping("/api/v1/especialidades")
 public class EspecialidadController {
 
-    @Autowired 
-    private EspecialidadService especialidadService;
+    private final EspecialidadService especialidadService;
+
+    EspecialidadController(EspecialidadService especialidadService) {
+        this.especialidadService = especialidadService;
+    }
 
     //Busqueda por coincidencia parcial de nombre 
     @GetMapping("/nombre/{nombre}")

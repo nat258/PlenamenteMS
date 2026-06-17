@@ -1,6 +1,5 @@
 package com.example.ms_profesionales.controller;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,8 +20,11 @@ import com.example.ms_profesionales.service.SucursalService;
 @RequestMapping("/api/v1/sucursales")
 public class SucursalController {
 
-    @Autowired
-    private SucursalService sucursalService;
+    private final SucursalService sucursalService;
+
+    SucursalController(SucursalService sucursalService) {
+        this.sucursalService = sucursalService;
+    }
 
     @GetMapping
     public ResponseEntity<List<SucursalDTO>> obtenerTodas() {
