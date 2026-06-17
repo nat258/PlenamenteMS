@@ -8,10 +8,14 @@ import com.example.ms_profesionales.DTO.RegionDTO;
 import com.example.ms_profesionales.model.Region;
 import com.example.ms_profesionales.service.RegionService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 
 @RestController
 @RequestMapping("/api/v1/regiones")
-@CrossOrigin(origins = "*")
+@Tag(name = "Region Controller", description = "Endpoints para gestionar regiones")
+
 public class RegionController {
 
     private final RegionService regionService;
@@ -21,6 +25,7 @@ public class RegionController {
     }
 
     @GetMapping
+    @Operation(summary = "Obtener todas las regiones", description = "Obtiene una lista de todas las regiones registradas.")
     public ResponseEntity<List<RegionDTO>> obtenerTodas() {
         List<RegionDTO> regiones = regionService.obtenerTodos();
         if (regiones.isEmpty()) {
@@ -30,6 +35,7 @@ public class RegionController {
     }
 
     @GetMapping("/{id}")
+    @Operation(summary = "Obtener región por ID", description = "Obtiene una región específica utilizando su ID único.")
     public ResponseEntity<?> buscarPorId(@PathVariable Integer id) {
         try {
             RegionDTO region = regionService.buscarPorId(id);
@@ -40,6 +46,7 @@ public class RegionController {
     }
 
     @PostMapping
+    @Operation(summary = "Registrar nueva región", description = "Crea una nueva región utilizando los datos proporcionados en el cuerpo de la solicitud.")
     public ResponseEntity<?> guardarRegion(@RequestBody Region region) {
         try {
             RegionDTO nueva = regionService.guardarRegion(region);
@@ -50,6 +57,7 @@ public class RegionController {
     }
 
     @PutMapping("/{id}")
+    @Operation(summary = "Actualizar región", description = "Actualiza los datos de una región específica utilizando su ID único.")
     public ResponseEntity<?> actualizarRegion(@PathVariable Integer id, @RequestBody Region region) {
         try {
             RegionDTO actualizada = regionService.actualizarRegion(id, region);
@@ -60,6 +68,7 @@ public class RegionController {
     }
 
     @DeleteMapping("/{id}")
+    @Operation(summary = "Eliminar región", description = "Elimina una región específica utilizando su ID único.")
     public ResponseEntity<String> eliminarRegion(@PathVariable Integer id) {
         String mensaje = regionService.eliminarRegion(id);
         if(mensaje.contains("No se puede eliminar")) {
@@ -69,6 +78,7 @@ public class RegionController {
     }
 
     @GetMapping("/buscar/{nombre}")
+    @Operation(summary = "Buscar región por nombre", description = "Obtiene una lista de regiones que coinciden con el nombre proporcionado.")
     public ResponseEntity<List<RegionDTO>> encontrarPorNombre(@PathVariable String nombre) {
         List<RegionDTO> regionesEncontradas = regionService.encontrarPorNombre(nombre);
         if (regionesEncontradas.isEmpty()) {

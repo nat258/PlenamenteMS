@@ -3,6 +3,7 @@ package com.example.ms_profesionales.controller;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,8 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.ms_profesionales.DTO.ComunaDTO;
 import com.example.ms_profesionales.service.ComunaService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequestMapping("/api/v1/comunas")
+@Tag(name = "Comuna Controller", description = "Endpoints para gestionar comunas")
 public class ComunaController {
 
     private final ComunaService comunaService;
@@ -25,6 +30,7 @@ public class ComunaController {
 
     //Busqueda por Id 
     @GetMapping("/{id}")
+    @Operation(summary = "Buscar comuna por ID", description = "Obtiene una comuna específica utilizando su ID único.")
     public ResponseEntity<?> buscarPorId(@PathVariable Integer id) {
         try {
             ComunaDTO comunaDTO = comunaService.buscarPorId(id);
@@ -36,6 +42,7 @@ public class ComunaController {
 
     //Busqueda por Nombre.
     @GetMapping("/nombre/{nombre}")
+    @Operation(summary = "Buscar comuna por nombre", description = "Obtiene una o más comunas específicas utilizando su nombre.")
     public ResponseEntity<?> buscarPorNombre(@PathVariable String nombre) {
         try {
             // Como tu service devuelve una List<ComunaDTO>, aquí enviamos la lista completa
@@ -49,6 +56,7 @@ public class ComunaController {
 
     //Busqueda por palabras que contenga el nombre 
     @GetMapping("/nombrePar/{nombre}")
+    @Operation(summary = "Buscar comuna por nombre parcial", description = "Obtiene una o más comunas específicas utilizando una parte de su nombre.")
     public ResponseEntity<?> buscarPorNombreParcial(@PathVariable String nombre) {
         try {
             List<ComunaDTO> listaResultados = comunaService.buscarPorNombreParcial(nombre);
@@ -60,6 +68,7 @@ public class ComunaController {
 
     //Registrar nueva comuna 
     @PostMapping
+    @Operation(summary = "Registrar nueva comuna", description = "Crea una nueva comuna utilizando los datos proporcionados en el cuerpo de la solicitud.")
     public ResponseEntity<?> registrarComuna(@RequestBody ComunaDTO comunaDTO) {
         try {
             ComunaDTO nuevaComuna = comunaService.registrarComuna(comunaDTO);
@@ -70,6 +79,8 @@ public class ComunaController {
     }
 
     //Eliminar comuna 
+    @DeleteMapping("/{id}")
+    @Operation(summary = "Eliminar comuna", description = "Elimina una comuna específica utilizando su ID único.")
     public ResponseEntity<String> eliminarComuna(@PathVariable Integer id) {
         String mensaje = comunaService.eliminarComuna(id);
         if (mensaje.contains("éxito")) {

@@ -15,8 +15,12 @@ import com.example.ms_profesionales.DTO.PsicologoDTO;
 import com.example.ms_profesionales.model.Psicologo;
 import com.example.ms_profesionales.service.PsicologoService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequestMapping("/api/v1/psicologos")
+@Tag(name = "Psicologo Controller", description = "Endpoints para gestionar psicólogos")
 public class PsicologoController {
 
     private final PsicologoService psicologoService;
@@ -27,12 +31,14 @@ public class PsicologoController {
 
     //Obtener todos los psicologos
     @GetMapping
+    @Operation(summary = "Obtener todos los psicólogos", description = "Obtiene una lista de todos los psicólogos registrados.")
     public ResponseEntity<List<PsicologoDTO>> obtenerTodos() {
         return ResponseEntity.ok(psicologoService.obtenerTodosLosPsicologos());
     }
 
     //Obtener por id
     @GetMapping("/{id}")
+    @Operation(summary = "Obtener psicólogo por ID", description = "Obtiene un psicólogo específico utilizando su ID único.")
     public ResponseEntity<Object> obtenerPorId(@PathVariable Integer id){
         try{
             PsicologoDTO psicologo = psicologoService.buscarPsicologoPorId(id);
@@ -56,6 +62,7 @@ public class PsicologoController {
 
     //Guardar nuevo psicologo
     @PostMapping
+    @Operation(summary = "Registrar nuevo psicólogo", description = "Crea un nuevo psicólogo utilizando los datos proporcionados en el cuerpo de la solicitud.")
     public ResponseEntity<Object> agregarPsicologo(@RequestBody Psicologo psicologo) {
         try {
             Psicologo guardado = psicologoService.guardarPsicologo(psicologo);
@@ -67,6 +74,7 @@ public class PsicologoController {
 
     //Actualizar por id
     @PutMapping("/{id}")
+    @Operation(summary = "Actualizar psicólogo", description = "Actualiza los datos de un psicólogo específico utilizando su ID único.")
     public ResponseEntity<Object> actualizarPsicologo(@PathVariable Integer id, @RequestBody Psicologo psicologo) {
         try {
             Psicologo editado = psicologoService.actualizarPsicologo(id, psicologo);
