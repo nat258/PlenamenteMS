@@ -1,6 +1,8 @@
 
 package com.example.ms_profesionales.model;
 import java.util.List;
+
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,7 +19,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "especialidad")
-
+@Schema(description = "Entidad que representa una especialidad, la cual puede ser ejercida por varios psicólogos.")
 public class Especialidad {
 
     @Id

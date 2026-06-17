@@ -1,5 +1,7 @@
 package com.example.ms_profesionales.model;
 import java.util.List;
+
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -20,6 +22,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "comuna")
 
+@Schema(description = "Entidad que representa una comuna, la cual pertenece a una región y puede tener varias sucursales.")
 public class Comuna {
 
     @Id

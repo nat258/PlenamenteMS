@@ -9,6 +9,7 @@ import com.example.ms_profesionales.model.Region;
 import com.example.ms_profesionales.service.RegionService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 
@@ -26,6 +27,8 @@ public class RegionController {
 
     @GetMapping
     @Operation(summary = "Obtener todas las regiones", description = "Obtiene una lista de todas las regiones registradas.")
+    @ApiResponse(responseCode = "200", description = "Regiones obtenidas exitosamente")
+    @ApiResponse(responseCode = "204", description = "No hay regiones registradas")
     public ResponseEntity<List<RegionDTO>> obtenerTodas() {
         List<RegionDTO> regiones = regionService.obtenerTodos();
         if (regiones.isEmpty()) {
@@ -36,6 +39,8 @@ public class RegionController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Obtener región por ID", description = "Obtiene una región específica utilizando su ID único.")
+    @ApiResponse(responseCode = "200", description = "Región encontrada exitosamente")
+    @ApiResponse(responseCode = "404", description = "Región no encontrada")
     public ResponseEntity<?> buscarPorId(@PathVariable Integer id) {
         try {
             RegionDTO region = regionService.buscarPorId(id);
@@ -47,6 +52,8 @@ public class RegionController {
 
     @PostMapping
     @Operation(summary = "Registrar nueva región", description = "Crea una nueva región utilizando los datos proporcionados en el cuerpo de la solicitud.")
+    @ApiResponse(responseCode = "201", description = "Región registrada exitosamente")
+    @ApiResponse(responseCode = "400", description = "Datos de la región inválidos")
     public ResponseEntity<?> guardarRegion(@RequestBody Region region) {
         try {
             RegionDTO nueva = regionService.guardarRegion(region);
@@ -58,6 +65,8 @@ public class RegionController {
 
     @PutMapping("/{id}")
     @Operation(summary = "Actualizar región", description = "Actualiza los datos de una región específica utilizando su ID único.")
+    @ApiResponse(responseCode = "200", description = "Región actualizada exitosamente")
+    @ApiResponse(responseCode = "404", description = "Región no encontrada")
     public ResponseEntity<?> actualizarRegion(@PathVariable Integer id, @RequestBody Region region) {
         try {
             RegionDTO actualizada = regionService.actualizarRegion(id, region);
@@ -69,6 +78,8 @@ public class RegionController {
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Eliminar región", description = "Elimina una región específica utilizando su ID único.")
+    @ApiResponse(responseCode = "200", description = "Región eliminada exitosamente")
+    @ApiResponse(responseCode = "404", description = "Región no encontrada")
     public ResponseEntity<String> eliminarRegion(@PathVariable Integer id) {
         String mensaje = regionService.eliminarRegion(id);
         if(mensaje.contains("No se puede eliminar")) {
@@ -79,6 +90,8 @@ public class RegionController {
 
     @GetMapping("/buscar/{nombre}")
     @Operation(summary = "Buscar región por nombre", description = "Obtiene una lista de regiones que coinciden con el nombre proporcionado.")
+    @ApiResponse(responseCode = "200", description = "Regiones encontradas exitosamente")
+    @ApiResponse(responseCode = "404", description = "Regiones no encontradas")
     public ResponseEntity<List<RegionDTO>> encontrarPorNombre(@PathVariable String nombre) {
         List<RegionDTO> regionesEncontradas = regionService.encontrarPorNombre(nombre);
         if (regionesEncontradas.isEmpty()) {
