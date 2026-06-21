@@ -69,9 +69,7 @@ public class Paciente {
     @OneToMany(mappedBy = "paciente")
     private List<HistorialDiagnostico> historialesDiagnostico;
 
-    //error por falta de reservaHora
-    @OneToMany(mappedBy = "paciente")
-    private List<ReservaHora> reservas;
+    
 
     @ManyToOne
     @JoinColumn(name = "prevision_id")

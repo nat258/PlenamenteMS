@@ -1,4 +1,4 @@
-package com.example.ms_profesionales.Service;
+package com.example.ms_profesionales.service;
 
 import java.lang.annotation.Inherited;
 
