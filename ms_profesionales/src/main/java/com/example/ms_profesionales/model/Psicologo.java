@@ -1,7 +1,10 @@
 package com.example.ms_profesionales.model;
 import java.util.List;
 
+import org.hibernate.validator.constraints.br.CPF;
+
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -30,30 +33,38 @@ public class Psicologo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_psicologo")
     private Integer id;
 
     @NotNull(message = "El RUT es obligatorio!")
     @Min(value = 1000000, message = "El RUT debe contener al menos 7 caracteres!")
     @Max(value = 99999999, message = "El RUT debe contener máximo 8 caracteres!")
+    @Column(name = "rut", unique = true)
+
     private Long rut;
 
     @NotBlank(message = "El digito verificador del RUT es obligatorio!")
     @Size(min = 1, max = 1, message = "El digito verificador del RUT debe ser de 1 caracter!")
+    @Column(name = "dv_rut")
     private String dv_rut;
 
     @NotBlank(message = "El primer nombre es obligatorio!")
     @Size(min = 3, message = "El primer nombre debe contener al menos 3 caracteres!")
+    @Column(name = "p_nombre")
     private String pNombre;
 
     @Size(min = 3, message = "El segundo nombre debe contener al menos 3 caracteres!")
+    @Column(name = "s_nombre")
     private String sNombre;
 
     @NotBlank(message = "El primer apellido es obligatorio!")
     @Size(min = 3, message = "El primer apellido debe contener al menos 3 caracteres!")
+    @Column(name = "p_apellido")    
     private String pApellido;
 
     @NotBlank(message = "El segundo apellido es obligatorio!")
     @Size(min = 3, message = "El segundo apellido debe contener al menos 3 caracteres!")
+    @Column(name = "s_apellido")
     private String sApellido;
 
     
