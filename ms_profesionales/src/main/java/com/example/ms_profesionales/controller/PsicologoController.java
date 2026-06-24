@@ -39,7 +39,7 @@ public class PsicologoController {
     }
 
     //Obtener por id
-    @GetMapping("/{id}")
+    @GetMapping("/buscar-psicologo/{id}")
     @Operation(summary = "Obtener psicólogo por ID", description = "Obtiene un psicólogo específico utilizando su ID único.")
     @ApiResponse(responseCode = "200", description = "Psicólogo encontrado exitosamente")
     @ApiResponse(responseCode = "404", description = "Psicólogo no encontrado")

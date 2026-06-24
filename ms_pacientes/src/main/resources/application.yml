@@ -17,7 +17,7 @@ spring:
     show-sql: 'true'
 
   profiles:
-    active: dev 
+    active: dev
 
 ---
 

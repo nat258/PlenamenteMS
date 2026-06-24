@@ -55,7 +55,7 @@ public class PacienteController {
 
     //CONEXION
     //BUSCAR PACIENTE POR ID
-    @GetMapping("/id/{id}")
+    @GetMapping("/buscar-paciente/{id}")
     @Operation(summary = "Muestra al paciente mediante a su id", description = "Muestra el paciente asociado al id que ingresemos.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Paciente encontrado",

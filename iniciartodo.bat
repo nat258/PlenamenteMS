@@ -3,7 +3,7 @@
 set BASE_DIR=%~dp0
 
 echo Iniciando Servidor de Descubrimiento Eureka (Puerto 8761)...
-cd /d "%BASE_DIR%eureka"    
+cd /d "%BASE_DIR%eureka"
 start cmd /k "mvnw spring-boot:run"
 
 echo Esperando 12 segundos a que Eureka se estabilice...
