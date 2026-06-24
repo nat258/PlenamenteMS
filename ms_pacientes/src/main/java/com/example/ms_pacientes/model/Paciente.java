@@ -21,6 +21,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -69,9 +70,6 @@ public class Paciente {
     @OneToMany(mappedBy = "paciente")
     private List<HistorialDiagnostico> historialesDiagnostico;
 
-    //error por falta de reservaHora
-    @OneToMany(mappedBy = "paciente")
-    private List<ReservaHora> reservas;
 
     @ManyToOne
     @JoinColumn(name = "prevision_id")

@@ -9,7 +9,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -57,20 +56,18 @@ public class Psicologo {
     @Size(min = 3, message = "El segundo apellido debe contener al menos 3 caracteres!")
     private String sApellido;
 
-    @OneToMany(mappedBy = "psicologo")
-    private List<ReservaHora> reservas;
     
     @ManyToMany
     @JoinTable(name = "psicologo_especialidad",
-               joinColumns = @JoinColumn(name = "id_psicologo"),
-               inverseJoinColumns = @JoinColumn(name = "id_especialidad"))
+                joinColumns = @JoinColumn(name = "id_psicologo"),
+                inverseJoinColumns = @JoinColumn(name = "id_especialidad"))
     @ToString.Exclude
     private List<Especialidad> especialidades;
     
     @ManyToMany
     @JoinTable(name = "psicologo_sucursal",
-               joinColumns = @JoinColumn(name = "id_psicologo"),
-               inverseJoinColumns = @JoinColumn(name = "id_sucursal"))
+                joinColumns = @JoinColumn(name = "id_psicologo"),
+                inverseJoinColumns = @JoinColumn(name = "id_sucursal"))
     @ToString.Exclude
     private List<Sucursal> sucursales;
 

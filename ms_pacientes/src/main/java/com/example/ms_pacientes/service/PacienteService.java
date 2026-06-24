@@ -18,7 +18,7 @@ public class PacienteService {
     private final PacienteRepository pacienteRepository;
 
 
-    PacienteService(PacienteRepository pacienteRepository) {
+    public PacienteService(PacienteRepository pacienteRepository) {
         this.pacienteRepository = pacienteRepository;
     }
 
@@ -26,8 +26,6 @@ public class PacienteService {
     public String eliminarPacientePorRut(String rut) {
         try {
             Paciente paciente = pacienteRepository.findByRut(rut)
-                    .stream()
-                    .findFirst()
                     .orElseThrow(() -> new RuntimeException("Paciente no encontrado con el RUT: " + rut));
             pacienteRepository.delete(paciente);
             return "Paciente eliminado con éxito";
@@ -52,8 +50,6 @@ public class PacienteService {
 
     public Paciente actualizarPacientePorRut(String rut, Paciente datosNuevos) {
         Paciente pacienteExistente = pacienteRepository.findByRut(rut)
-                .stream()
-                .findFirst()
                 .orElseThrow(() -> new RuntimeException("No se puede actualizar: RUT " + rut + " no encontrado."));
 
         validarPaciente(datosNuevos);
@@ -78,16 +74,12 @@ public class PacienteService {
 
     public PacienteDTO buscarPorID(Integer id) {
         Paciente paciente = pacienteRepository.findById(id)
-                .stream()
-                .findFirst()
                 .orElseThrow(() -> new RuntimeException("Paciente no encontrado con el Id: " + id));
-            return convertirADTO(paciente);
+        return convertirADTO(paciente);
     }
 
     public PacienteDTO buscarPorRut(String rut) {
         Paciente paciente = pacienteRepository.findByRut(rut)
-                .stream()
-                .findFirst()
                 .orElseThrow(() -> new RuntimeException("Paciente no encontrado con el RUT: " + rut));
         return convertirADTO(paciente);
     }
