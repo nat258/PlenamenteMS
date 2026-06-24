@@ -68,15 +68,15 @@ public class Psicologo {
     
     @ManyToMany
     @JoinTable(name = "psicologo_especialidad",
-               joinColumns = @JoinColumn(name = "id_psicologo"),
-               inverseJoinColumns = @JoinColumn(name = "id_especialidad"))
+                joinColumns = @JoinColumn(name = "id_psicologo"),
+                inverseJoinColumns = @JoinColumn(name = "id_especialidad"))
     @ToString.Exclude
     private List<Especialidad> especialidades;
     
     @ManyToMany
     @JoinTable(name = "psicologo_sucursal",
-               joinColumns = @JoinColumn(name = "id_psicologo"),
-               inverseJoinColumns = @JoinColumn(name = "id_sucursal"))
+                joinColumns = @JoinColumn(name = "id_psicologo"),
+                inverseJoinColumns = @JoinColumn(name = "id_sucursal"))
     @ToString.Exclude
     private List<Sucursal> sucursales;
 
