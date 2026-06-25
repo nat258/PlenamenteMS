@@ -19,7 +19,7 @@ import com.example.ms_profesionales.DTO.RegionDTO;
 import com.example.ms_profesionales.model.Region;
 import com.example.ms_profesionales.repository.RegionRepository;
 
-@ExtendWith(MockitoExtension.class) // Inicializa el entorno Mockito
+@ExtendWith(MockitoExtension.class) 
 class RegionServiceTest {
 
     @Mock
@@ -37,36 +37,29 @@ class RegionServiceTest {
         regionEjemplo.setNombre("Metropolitana");
     }
 
-    // ==========================================
-    // PRUEBAS: obtenerTodos()
-    // ==========================================
+    // Prueba obtenerTodos()
+
     @Test
     void obtenerTodos_DeberiaRetornarListaDeDTOs() {
-        // Arrange
+        
         when(regionRepository.findAll()).thenReturn(List.of(regionEjemplo));
 
-        // Act
         List<RegionDTO> resultado = regionService.obtenerTodos();
 
-        // Assert
         assertNotNull(resultado);
         assertEquals(1, resultado.size());
         assertEquals("Metropolitana", resultado.get(0).getNombre());
         verify(regionRepository, times(1)).findAll();
     }
 
-    // ==========================================
     // PRUEBAS: buscarPorId()
-    // ==========================================
     @Test
     void buscarPorId_CuandoExiste_DeberiaRetornarDTO() {
-        // Arrange
+        
         when(regionRepository.findById(1)).thenReturn(Optional.of(regionEjemplo));
 
-        // Act
         RegionDTO resultado = regionService.buscarPorId(1);
 
-        // Assert
         assertNotNull(resultado);
         assertEquals(1, resultado.getId());
         assertEquals("Metropolitana", resultado.getNombre());
@@ -74,19 +67,17 @@ class RegionServiceTest {
 
     @Test
     void buscarPorId_CuandoNoExiste_DeberiaLanzarRuntimeException() {
-        // Arrange
+        
         when(regionRepository.findById(99)).thenReturn(Optional.empty());
 
-        // Act & Assert
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
             regionService.buscarPorId(99);
         });
         assertTrue(exception.getMessage().contains("no se encuentra registrado"));
     }
 
-    // ==========================================
-    // PRUEBAS: guardarRegion()
-    // ==========================================
+    
+    // Prueba guardarRegion()
     @Test
     void guardarRegion_CaminoExitoso_DeberiaGuardarCorrectamente() {
         // Arrange
@@ -115,12 +106,12 @@ class RegionServiceTest {
         verify(regionRepository, never()).save(any(Region.class));
     }
 
-    // ==========================================
-    // PRUEBAS: actualizarRegion()
-    // ==========================================
+    
+    //Prueba actualizar region
+    
     @Test
     void actualizarRegion_NombreCambiaYNoEstaDuplicado_DeberiaActualizar() {
-        // Arrange
+        
         Region regNueva = new Region();
         regNueva.setNombre("Valparaíso");
 
@@ -132,10 +123,10 @@ class RegionServiceTest {
         regionGuardada.setNombre("Valparaíso");
         when(regionRepository.save(any(Region.class))).thenReturn(regionGuardada);
 
-        // Act
+       
         RegionDTO resultado = regionService.actualizarRegion(1, regNueva);
 
-        // Assert
+        
         assertNotNull(resultado);
         assertEquals("Valparaíso", resultado.getNombre());
     }
@@ -153,40 +144,36 @@ class RegionServiceTest {
         otraRegion.setNombre("Biobío");
         when(regionRepository.findByNombreIgnoreCase("Biobío")).thenReturn(Optional.of(otraRegion));
 
-        // Act & Assert
+        
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
             regionService.actualizarRegion(1, regNueva);
         });
         assertTrue(exception.getMessage().contains("ya se encuentra registrado en otra region"));
     }
 
-    // ==========================================
-    // PRUEBAS: eliminarRegion()
-    // ==========================================
+    
+    // Prueba eliminarRegion()
+    
     @Test
     void eliminarRegion_Exitoso_DeberiaRetornarMensajeExito() {
         // Arrange
         when(regionRepository.findById(1)).thenReturn(Optional.of(regionEjemplo));
         doNothing().when(regionRepository).delete(regionEjemplo);
 
-        // Act
         String resultado = regionService.eliminarRegion(1);
 
-        // Assert
         assertEquals("Region 'Metropolitana' eliminada exitosamente.", resultado);
         verify(regionRepository, times(1)).delete(regionEjemplo);
     }
 
     @Test
     void eliminarRegion_ConComunasAsociadas_DeberiaCapturarDataIntegrityViolationException() {
-        // Arrange
+        
         when(regionRepository.findById(1)).thenReturn(Optional.of(regionEjemplo));
         doThrow(DataIntegrityViolationException.class).when(regionRepository).delete(regionEjemplo);
 
-        // Act
         String resultado = regionService.eliminarRegion(1);
 
-        // Assert
         assertEquals("No se puede eliminar la Region porque tiene comunas asociadas", resultado);
     }
 

@@ -49,9 +49,7 @@ class ComunaServiceTest {
         comunaDTOEjemplo.setNombre("Providencia");
     }
 
-    // ==========================================
-    // PRUEBAS: eliminarComuna()
-    // ==========================================
+    //Pruebas eliminar comunas
     @Test
     void eliminarComuna_Exitoso_DeberiaRetornarMensajeExito() {
         // Arrange
@@ -68,20 +66,17 @@ class ComunaServiceTest {
 
     @Test
     void eliminarComuna_NoExiste_DeberiaRetornarMensajeError() {
-        // Arrange
         when(comunaRepository.findById(999)).thenReturn(Optional.empty());
 
-        // Act
         String resultado = comunaService.eliminarComuna(999);
 
-        // Assert
         assertTrue(resultado.contains("Comuna no encontrada con el ID: 999"));
         verify(comunaRepository, never()).delete(any(Comuna.class));
     }
 
-    // ==========================================
-    // PRUEBAS: registrarComuna()
-    // ==========================================
+    
+    // Prueba registrar comuna ()
+    
     @Test
     void registrarComuna_Exitoso_DeberiaGuardarYRetornarDTOConId() {
         // Arrange
@@ -90,10 +85,8 @@ class ComunaServiceTest {
         when(comunaRepository.existsByNombre("Providencia")).thenReturn(false);
         when(comunaRepository.save(any(Comuna.class))).thenReturn(comunaEjemplo);
 
-        // Act
         ComunaDTO resultado = comunaService.registrarComuna(comunaDTOEjemplo);
 
-        // Assert
         assertNotNull(resultado);
         assertEquals(50, resultado.getId()); // Verifica que se asignó el ID generado
         assertEquals("Providencia", resultado.getNombre());
@@ -102,10 +95,9 @@ class ComunaServiceTest {
 
     @Test
     void registrarComuna_NombreDuplicado_DeberiaLanzarRuntimeException() {
-        // Arrange
+
         when(comunaRepository.existsByNombre("Providencia")).thenReturn(true);
 
-        // Act & Assert
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
             comunaService.registrarComuna(comunaDTOEjemplo);
         });
@@ -113,9 +105,7 @@ class ComunaServiceTest {
         verify(comunaRepository, never()).save(any(Comuna.class));
     }
 
-    // ==========================================
-    // PRUEBAS: buscarPorId()
-    // ==========================================
+    // Prueba buscar por Id.
     @Test
     void buscarPorId_CuandoExiste_DeberiaRetornarDTO() {
         // Arrange
@@ -133,7 +123,6 @@ class ComunaServiceTest {
 
     @Test
     void buscarPorId_CuandoNoExiste_DeberiaLanzarRuntimeException() {
-        // Arrange
         when(comunaRepository.findById(999)).thenReturn(Optional.empty());
 
         // Act & Assert
@@ -143,9 +132,9 @@ class ComunaServiceTest {
         assertEquals("¡Comuna no encontrada!", exception.getMessage());
     }
 
-    // ==========================================
-    // PRUEBAS: buscarPorNombre()
-    // ==========================================
+    
+    // Prueba de busqueda por nombre
+    
     @Test
     void buscarPorNombre_DeberiaRetornarListaDeDTOs() {
         // Arrange
@@ -160,9 +149,9 @@ class ComunaServiceTest {
         assertEquals("Providencia", resultado.get(0).getNombre());
     }
 
-    // ==========================================
-    // PRUEBAS: buscarPorNombreParcial()
-    // ==========================================
+    
+    // Prueba busqueda por nombre parcial
+    
     @Test
     void buscarPorNombreParcial_CuandoCoincide_DeberiaRetornarListaDTO() {
         // Arrange
@@ -179,10 +168,10 @@ class ComunaServiceTest {
 
     @Test
     void buscarPorNombreParcial_SinCoincidencias_DeberiaLanzarRuntimeException() {
-        // Arrange
+        
         when(comunaRepository.findByNombreContainingIgnoreCase("Inexistente")).thenReturn(Collections.emptyList());
 
-        // Act & Assert
+        
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
             comunaService.buscarPorNombreParcial("Inexistente");
         });
