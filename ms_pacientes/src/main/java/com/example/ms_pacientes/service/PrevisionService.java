@@ -16,7 +16,7 @@ public class PrevisionService {
 
     private final PrevisionRepository previsionRepository;
 
-    PrevisionService(PrevisionRepository previsionRepository) {
+    public PrevisionService(PrevisionRepository previsionRepository) {
         this.previsionRepository = previsionRepository;
     }
 

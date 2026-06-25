@@ -15,6 +15,7 @@ import jakarta.transaction.Transactional;
 
 @Service
 @Transactional
+
 public class SucursalService {
 
     private final SucursalRepository sucursalRepository;
