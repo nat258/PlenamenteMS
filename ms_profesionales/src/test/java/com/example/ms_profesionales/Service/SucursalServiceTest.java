@@ -1,10 +1,9 @@
-package com.example.ms_profesionales.service;
+package com.example.ms_profesionales.Service;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -24,6 +23,7 @@ import com.example.ms_profesionales.model.Psicologo;
 import com.example.ms_profesionales.model.Sucursal;
 import com.example.ms_profesionales.repository.ComunaRepository;
 import com.example.ms_profesionales.repository.SucursalRepository;
+import com.example.ms_profesionales.service.SucursalService;
 
 @ExtendWith(MockitoExtension.class) // Habilita el entorno de Mockito en JUnit 5
 class SucursalServiceTest {
@@ -52,9 +52,9 @@ class SucursalServiceTest {
         sucursalEjemplo.setComuna(comunaEjemplo);
     }
 
-    // ==========================================
+    
     // PRUEBAS: obtenerTodos()
-    // ==========================================
+    
     @Test
     void obtenerTodos_DeberiaRetornarListaDeDTOs() {
         // Arrange
@@ -70,9 +70,9 @@ class SucursalServiceTest {
         verify(sucursalRepository, times(1)).findAll();
     }
 
-    // ==========================================
+    
     // PRUEBAS: buscarPorId()
-    // ==========================================
+    
     @Test
     void buscarPorId_CuandoExiste_DeberiaRetornarDTO() {
         // Arrange
@@ -89,22 +89,22 @@ class SucursalServiceTest {
 
     @Test
     void buscarPorId_CuandoNoExiste_DeberiaLanzarRuntimeException() {
-        // Arrange
+       
         when(sucursalRepository.findById(99)).thenReturn(Optional.empty());
 
-        // Act & Assert
+        
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
             sucursalService.buscarPorId(99);
         });
         assertTrue(exception.getMessage().contains("no se encuentra registrado"));
     }
 
-    // ==========================================
+    
     // PRUEBAS: guardarSucursal()
-    // ==========================================
+    
     @Test
     void guardarSucursal_CaminoExitoso_DeberiaGuardarCorrectamente() {
-        // Arrange
+        
         when(comunaRepository.existsById(1)).thenReturn(true);
         when(sucursalRepository.findByNombreIgnoreCase("Sucursal Central")).thenReturn(Optional.empty());
         when(sucursalRepository.save(any(Sucursal.class))).thenReturn(sucursalEjemplo);
