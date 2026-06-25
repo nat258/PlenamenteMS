@@ -1,4 +1,3 @@
-package com.example.ms_profesionales.service;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -18,6 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import com.example.ms_profesionales.DTO.EspecialidadDTO;
 import com.example.ms_profesionales.model.Especialidad;
 import com.example.ms_profesionales.repository.EspecialidadRepository;
+import com.example.ms_profesionales.service.EspecialidadService;
 
 @ExtendWith(MockitoExtension.class) // Inicializa el entorno Mockito con JUnit 5
 class EspecialidadServiceTest {

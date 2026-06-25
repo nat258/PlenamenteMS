@@ -1,4 +1,3 @@
-package com.example.ms_profesionales.service;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -19,6 +18,7 @@ import com.example.ms_profesionales.DTO.ComunaDTO;
 import com.example.ms_profesionales.model.Comuna;
 import com.example.ms_profesionales.model.Region;
 import com.example.ms_profesionales.repository.ComunaRepository;
+import com.example.ms_profesionales.service.ComunaService;
 
 @ExtendWith(MockitoExtension.class) // Habilita el entorno Mockito para JUnit 5
 class ComunaServiceTest {
