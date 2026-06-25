@@ -17,6 +17,12 @@ public class ComunaService {
         this.comunaRepository = comunaRepository;
     }
 
+    public List<ComunaDTO> obtenerTodas() {
+        return comunaRepository.findAll().stream()
+                .map(this::convertirADTO)
+                .toList();
+    }  
+
     public String eliminarComuna(Integer id) {
         try {
         Comuna comuna = comunaRepository.findById(id)

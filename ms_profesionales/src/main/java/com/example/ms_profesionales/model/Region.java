@@ -25,11 +25,10 @@ public class Region {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_region")
     private Integer id;
 
     @NotBlank(message = "El nombre de region no puede estar vacio!")
-    @Column(name = "nombre_region", unique = true)
+    @Column(unique = true)
     private String nombre;
 
     @OneToMany(mappedBy = "region")

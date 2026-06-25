@@ -28,6 +28,16 @@ public class EspecialidadController {
         this.especialidadService = especialidadService;
     }
 
+    @GetMapping
+    @Operation(summary = "Listar todas las especialidades", description = "Obtiene una lista de todas las especialidades.")
+    public ResponseEntity<List<EspecialidadDTO>> obtenerTodas() {
+        List<EspecialidadDTO> lista = especialidadService.obtenerTodas();
+        if (lista.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(lista);
+    }
+
     //Busqueda por coincidencia parcial de nombre 
     @GetMapping("/nombre/{nombre}")
     @Operation(summary = "Buscar especialidad por nombre parcial", description = "Obtiene una o más especialidades específicas utilizando una parte de su nombre.")

@@ -26,33 +26,9 @@ public class ReservaHoraService {
     public ReservaHoraDTO guardarReserva(ReservaHoraDTO reservaDTO) {
         validarReserva(reservaDTO);
 
-        try {
-            webClientBuilder.build()
-                .get()
-                .uri("http://localhost:8081/api/v1/pacientes/" + reservaDTO.getPacienteId())
-                .retrieve()
-                .bodyToMono(Object.class)
-                .block();
-        } catch (WebClientResponseException e) {
-            if (e.getStatusCode().value() == 404) {
-                throw new RuntimeException("Error! El paciente con ID " + reservaDTO.getPacienteId() + " no se encuentra registrado!");
-            }
-            throw new RuntimeException("Error de comunicacion con ms_pacientes.");
-        }
+        verificarRegistro("http://ms-pacientes/api/v1/pacientes/id/", reservaDTO.getPacienteId(), "paciente");
 
-        try {
-            webClientBuilder.build()
-                .get()
-                .uri("http://localhost:8082/api/v1/psicologos/" + reservaDTO.getPsicologoId())
-                .retrieve()
-                .bodyToMono(Object.class)
-                .block();
-        } catch (WebClientResponseException e) {
-            if (e.getStatusCode().value() == 404) {
-                throw new RuntimeException("Error! El psicologo con ID " + reservaDTO.getPsicologoId() + " no se encuentra registrado!");
-            }
-            throw new RuntimeException("Error de comunicacion con ms_psicologos.");
-        }
+        verificarRegistro("http://ms-profesionales/api/v1/psicologos/", reservaDTO.getPsicologoId(), "psicologo");
 
         List<ReservaHora> citasConflictivas = reservaHoraRepository.findByPsicologoIdAndFechaHora(
             reservaDTO.getPsicologoId(),
@@ -117,6 +93,20 @@ public class ReservaHoraService {
         return convertirADTO(reservaSave);
     }
 
+    // Obtener historial de reservas de paciente
+    public List<ReservaHoraDTO> buscarReservasPorPaciente(Integer pacId) {
+        return reservaHoraRepository.findByPacienteId(pacId).stream()
+                .map(this::convertirADTO)
+                .toList();
+    }
+
+    // Obtener historial de reservas de psicologo
+    public List<ReservaHoraDTO> buscarReservasPorPsicologo(Integer psicologoId) {
+        return reservaHoraRepository.findByPsicologoId(psicologoId).stream()
+                .map(this::convertirADTO)
+                .toList();
+    }
+
     //DTO
     public List<ReservaHoraDTO> obtenerReservas(){
         return reservaHoraRepository.findAll().stream()
@@ -149,7 +139,6 @@ public class ReservaHoraService {
         return dto;
     }
 
-
     // VALIDACION FECHA Y HORA
     private void validarReserva(ReservaHoraDTO reservaDTO) {
         if (reservaDTO.getPacienteId() == null || reservaDTO.getPsicologoId() == null) {
@@ -178,6 +167,36 @@ public class ReservaHoraService {
         reservaHoraRepository.save(reserva);
 
         return "La boleta ha sido eliminada de la reserva " + reservaId;
+    }
+
+    // Verificar registro externo
+
+    private void verificarRegistro(String url, Integer id, String nombreEnt) {
+        try {
+            webClientBuilder.build()
+                .get()
+                .uri(url + id)
+                .retrieve()
+                .bodyToMono(Object.class)
+                .block();
+        } catch (WebClientResponseException e) {
+            // Id no existe
+            if (e.getStatusCode().value() == 404) {
+                throw new RuntimeException("Error! El " + nombreEnt + " con ID " + id + " no se encuentra registrado!");
+            }
+
+            // Error interno
+            if (e.getStatusCode().is5xxServerError()) {
+                throw new RuntimeException("Error interno en ms_" + nombreEnt + ", intente mas tarde.");
+            }
+
+            // Otros errores
+            throw new RuntimeException("Error de comunicacion con ms_" + nombreEnt + ".");
+
+        } catch (Exception e) {
+            // Microservicio no responde
+            throw new RuntimeException("Error! El microservicio ms_" + nombreEnt + " se encuentra apagado o no responde.");
+        }
     }
     
 }

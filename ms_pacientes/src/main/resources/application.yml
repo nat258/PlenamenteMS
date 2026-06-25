@@ -1,5 +1,32 @@
+spring:
+  application:
+    name: ms-pacientes
+  profiles:
+    active: dev
+  cloud:
+    compatibility-verifier:
+      enabled: false
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+  datasource:
+    username: root
+    url: jdbc:mysql://localhost:3306/db_pacientes?createDatabaseIfNotExist=true
+    driverClassName: com.mysql.cj.jdbc.Driver
+    password: ''
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+
 server:
-  port: '8081'
+  port: 0
 
 springdoc:
   api-docs:
@@ -7,42 +34,21 @@ springdoc:
   swagger-ui:
     path: /doc/swagger-ui/index.html
 
-spring:
-  application:
-    name: jedis
-  flyway:
-    enabled: 'true'
-    baseline-on-migrate: 'true'
-  jpa:
-    show-sql: 'true'
-
-  profiles:
-    active: dev 
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
 
 ---
-
-spring:
-  config:
-    activate:
-      on-profile: dev
-  datasource:
-    username: root
-    url: jdbc:mysql://localhost:3306/db_plenamente?createDatabaseIfNotExist=true
-    driverClassName: com.mysql.cj.jdbc.Driver
-    password: ''
-  jpa:
-    hibernate:
-      ddl-auto: update # Permitimos que actualice localmente si es necesario
-
----
-
 spring:
   config:
     activate:
       on-profile: test
   datasource:
     username: root
-    url: jdbc:mysql://localhost:3306/db_plenamente_test?createDatabaseIfNotExist=true
+    url: jdbc:mysql://localhost:3306/db_pacientes_test?createDatabaseIfNotExist=true
     driverClassName: com.mysql.cj.jdbc.Driver
     password: ''
   jpa:
@@ -50,14 +56,13 @@ spring:
       ddl-auto: update
 
 ---
-
 spring:
   config:
     activate:
       on-profile: prod
   datasource:
     username: root
-    url: jdbc:mysql://localhost:3306/db_plenamente_prod?createDatabaseIfNotExist=true
+    url: jdbc:mysql://localhost:3306/db_pacientes_prod?createDatabaseIfNotExist=true
     driverClassName: com.mysql.cj.jdbc.Driver
     password: ''
   jpa:

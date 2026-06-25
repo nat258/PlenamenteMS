@@ -38,7 +38,6 @@ public class HistorialDiagnostico {
     @JoinColumn(name = "paciente_id")
     private Paciente paciente;
 
-    
     @ManyToOne
     @JoinColumn(name = "diagnostico_id")
     private Diagnostico diagnostico;

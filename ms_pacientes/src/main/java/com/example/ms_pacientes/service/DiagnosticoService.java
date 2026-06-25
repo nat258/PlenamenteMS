@@ -20,7 +20,7 @@ public class DiagnosticoService {
     final DiagnosticoRepository diagnosticoRepository;
 
 
-    public DiagnosticoService(DiagnosticoRepository diagnosticoRepository) {
+    DiagnosticoService(DiagnosticoRepository diagnosticoRepository) {
         this.diagnosticoRepository = diagnosticoRepository;
     }
 

@@ -2,6 +2,7 @@ package com.example.ms_agendamiento.controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -29,17 +30,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 @Tag(name = "Reservas", description = "Operaciones para el agendamiento de citas medicas")
 public class ReservaHoraController {
 
-    private final ReservaHoraService reservaService;
-
-    ReservaHoraController(ReservaHoraService reservaService) {
-        this.reservaService = reservaService;
-    }
+    @Autowired
+    private ReservaHoraService reservaService;
 
     @Operation(summary = "Obtener todas las reservas", description = "Retorna una lista de todas las reservas medicas registradas en el sistema.")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Lista obtenida exitosamente",
-                    content = @Content(mediaType = "application/json",
-                    schema = @Schema(implementation = ReservaHoraDTO.class))),
+                     content = @Content(mediaType = "application/json",
+                     schema = @Schema(implementation = ReservaHoraDTO.class))),
         @ApiResponse(responseCode = "204", description = "No hay reservas registradas (sin contenido).")
     })
     @GetMapping
@@ -57,8 +55,8 @@ public class ReservaHoraController {
     @Operation(summary = "Buscar reserva por ID", description = "Busca y retorna los detalles de una reserva medica usando su identificador unico.")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Reserva encontrada exitosamente",
-                    content = @Content(mediaType = "application/json",
-                    schema = @Schema(implementation = ReservaHoraDTO.class))),
+                     content = @Content(mediaType = "application/json",
+                     schema = @Schema(implementation = ReservaHoraDTO.class))),
         @ApiResponse(responseCode = "404", description = "La reserva no fue encontrada en la base de datos.")
     })
     @GetMapping("/{id}")
@@ -67,7 +65,7 @@ public class ReservaHoraController {
             ReservaHoraDTO encontrado = reservaService.buscarReservaHoraPorId(id);
             return new ResponseEntity<>(encontrado, HttpStatus.OK);
         } catch (RuntimeException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+           return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 
@@ -75,8 +73,8 @@ public class ReservaHoraController {
     @Operation(summary = "Agendar una nueva reserva", description = "Crea una nueva reserva medica validando primero la existencia del paciente y psicologo a traves de sus respectivos microservicios.")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "201", description = "Reserva creada exitosamente",
-                    content = @Content(mediaType = "application/json",
-                    schema = @Schema(implementation = ReservaHoraDTO.class))),
+                     content = @Content(mediaType = "application/json",
+                     schema = @Schema(implementation = ReservaHoraDTO.class))),
         @ApiResponse(responseCode = "400", description = "Error de validacion (ej: el paciente no existe, el psicologo no existe o hay choque de horario)")
     })
     @PostMapping
@@ -94,8 +92,8 @@ public class ReservaHoraController {
     @Operation(summary = "Actualizar una reserva", description = "Permite modificar la fecha, hora o estado de una reserva existente, validando que el nuevo horario no choque con otras citas del psicologo")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Reserva actualizada exitosamente",
-                    content = @Content(mediaType = "application/json",
-                    schema = @Schema(implementation = ReservaHoraDTO.class))),
+                     content = @Content(mediaType = "application/json",
+                     schema = @Schema(implementation = ReservaHoraDTO.class))),
         @ApiResponse(responseCode = "400", description = "Error de validacion (ej: El nuevo horario ya esta ocupado)."),
         @ApiResponse(responseCode = "404", description = "La reserva a actualizar no fue encontrada.")
     })
@@ -141,6 +139,42 @@ public class ReservaHoraController {
         } catch (RuntimeException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
+    }
+
+
+    @Operation(summary = "Obtener reservas por Paciente", description = "Retorna el historial completo de citas medicas asociadas a un ID de paciente")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Historial obtenido exitosamente"),
+        @ApiResponse(responseCode = "204", description = "El paciente no tiene reservas registradas (sin contenido)")
+    })
+    @GetMapping("/paciente/{pacienteId}")
+    public ResponseEntity<List<ReservaHoraDTO>> obtenerReservasDePaciente(@PathVariable Integer pacienteId) {
+        
+        List<ReservaHoraDTO> historial = reservaService.buscarReservasPorPaciente(pacienteId);
+        
+        if (historial.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        
+        return new ResponseEntity<>(historial, HttpStatus.OK);
+    }
+
+
+    @Operation(summary = "Obtener reservas por Psicologo", description = "Retorna el historial completo de citas medicas asociadas a un ID de psicólogo")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Historial obtenido exitosamente"),
+        @ApiResponse(responseCode = "204", description = "El psicologo no tiene reservas registradas (sin contenido)")
+    })
+    @GetMapping("/psicologo/{psicologoId}")
+    public ResponseEntity<List<ReservaHoraDTO>> obtenerReservasDePsicologo(@PathVariable Integer psicologoId) {
+        
+        List<ReservaHoraDTO> historial = reservaService.buscarReservasPorPsicologo(psicologoId);
+        
+        if (historial.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT); // 204 Si no tiene horas agendadas
+        }
+        
+        return new ResponseEntity<>(historial, HttpStatus.OK); // 200 Si encontró horas
     }
 
 }

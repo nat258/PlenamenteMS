@@ -19,6 +19,12 @@ public class EspecialidadService {
         this.especialidadRepository = especialidadRepository;
     }
 
+    public List<EspecialidadDTO> obtenerTodas() {
+        return especialidadRepository.findAll().stream()
+                .map(this::convertirADTO)
+                .toList();
+    }  
+
     // Buscar por coincidencia parcial al tipo de especialidad .
     public List<EspecialidadDTO> buscarPorNombreParcial(String nombre) {
         List<Especialidad> especialidades = especialidadRepository.findByNombreContainingIgnoreCase(nombre);

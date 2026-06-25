@@ -2,7 +2,6 @@ package com.example.ms_profesionales.model;
 import java.util.List;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -27,15 +26,12 @@ public class Sucursal {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_sucursal")
     private Integer id;
 
     @NotBlank(message = "El nombre de la sucursal es obligatorio!")
-    @Column(name = "nombre_sucursal", unique = true)    
     private String nombre;
     
     @NotBlank(message = "La direccion no puede estar vacia!")
-    @Column(name = "direccion")
     private String direccion;
 
     @ManyToMany(mappedBy = "sucursales")

@@ -22,7 +22,7 @@ public class HistorialDiagnosticoService {
 
     private final PacienteRepository pacienteRepository;
 
-    public HistorialDiagnosticoService(HistorialDiagnosticoRepository historialDiagnosticoRepository, PacienteRepository pacienteRepository) {
+    HistorialDiagnosticoService(HistorialDiagnosticoRepository historialDiagnosticoRepository, PacienteRepository pacienteRepository) {
         this.historialDiagnosticoRepository = historialDiagnosticoRepository;
         this.pacienteRepository = pacienteRepository;
     }
@@ -72,6 +72,21 @@ public class HistorialDiagnosticoService {
 
         HistorialDiagnostico guardado = historialDiagnosticoRepository.save(historial);
         return convertirADTO(guardado);
+    }
+
+    public String eliminarHistorial(Integer id) {
+        try {
+            HistorialDiagnostico hist = historialDiagnosticoRepository.findById(id)
+                        .orElseThrow(() -> new RuntimeException("El historial con ID " + id + " no se encuentra registrado!"));
+
+            historialDiagnosticoRepository.delete(hist);
+            return "Historial de diagnostico " + id + " eliminada con exito";
+
+        } catch (DataIntegrityViolationException e) {
+            return "No se puede eliminar el historial porque actualmente esta conectado a un paciente";
+        } catch (Exception e) {
+            return e.getMessage();
+        }
     }
 
     public List<HistorialDiagnosticoDTO> diagnosticoPorIdPaciente(Integer id) {
