@@ -1,95 +1,84 @@
 server:
-  port: 8080
+  port: 8090
 
 spring:
   application:
     name: gateway
   cloud:
+    compatibility-verifier:
+      enabled: false
     gateway:
-      server:
-        webmvc:
-          routes:
-          # Rutas para cada microservicio
-            - id: boleta-service
-              uri: lb://ms_agendamiento
-              predicates:
-                - Path=/api/v1/boleta/**, /boleta/api-docs/**
+      discovery:
+        locator:
+          enabled: false
+      routes:
+        # AGENDAMIENTO
+        - id: reserva-service
+          uri: lb://MS-AGENDAMIENTO
+          predicates:
+            - Path=/api/v1/reservas/**
 
-            - id: comuna-service
-              uri: lb://ms_profesionales
-              predicates:
-                - Path=/api/v1/comuna/**, /comuna/api-docs/**
+        - id: boleta-service
+          uri: lb://MS-AGENDAMIENTO
+          predicates:
+            - Path=/api/v1/boletas/**
 
-            - id: diagnostico-service
-              uri: lb://ms_pacientes
-              predicates:
-                - Path=/api/v1/diagnostico/**, /diagnostico/api-docs/**
+        # PACIENTES
+        - id: paciente-service
+          uri: lb://MS-PACIENTES
+          predicates:
+            - Path=/api/v1/pacientes/**
 
-            - id: especialidad-service
-              uri: lb://ms_profesionales
-              predicates:
-                - Path=/api/v1/especialidad/**, /especialidad/api-docs/**
+        - id: diagnostico-service
+          uri: lb://MS-PACIENTES
+          predicates:
+            - Path=/api/v1/diagnosticos/**
 
-            - id: historialDiagnostico-service
-              uri: lb://ms_pacientes
-              predicates:
-                - Path=/api/v1/historial-diagnostico/**, /historial-diagnostico/api-docs/**
+        - id: historial-service
+          uri: lb://MS-PACIENTES
+          predicates:
+            - Path=/api/v1/historiales/**
 
-            - id: paciente-service
-              uri: lb://ms_pacientes
-              predicates:
-                - Path=/api/v1/paciente/**, /paciente/api-docs/**
+        - id: prevision-service
+          uri: lb://MS-PACIENTES
+          predicates:
+            - Path=/api/v1/prevision/**
 
-            - id: prevision-service
-              uri: lb://ms_pacientes
-              predicates:
-                - Path=/api/v1/prevision/**, /prevision/api-docs/**
+        # PROFESIONALES
+        - id: psicologo-service
+          uri: lb://MS-PROFESIONALES
+          predicates:
+            - Path=/api/v1/psicologos/**
 
-            - id: psicologo-service
-              uri: lb://ms_profesionales
-              predicates:
-                - Path=/api/v1/psicologo/**, /psicologo/api-docs/**
+        - id: especialidad-service
+          uri: lb://MS-PROFESIONALES
+          predicates:
+            - Path=/api/v1/especialidades/**
 
-            - id: region-service
-              uri: lb://ms_profesionales
-              predicates:
-                - Path=/api/v1/region/**, /region/api-docs/**
+        - id: comuna-service
+          uri: lb://MS-PROFESIONALES
+          predicates:
+            - Path=/api/v1/comunas/**
 
-            - id: reservaHora-service
-              uri: lb://ms_agendamiento
-              predicates:
-                - Path=/api/v1/reserva-hora/**, /reserva-hora/api-docs/**
+        - id: region-service
+          uri: lb://MS-PROFESIONALES
+          predicates:
+            - Path=/api/v1/regiones/**
 
-            - id: sucursal-service
-              uri: lb://ms_profesionales
-              predicates:
-                - Path=/api/v1/sucursal/**, /sucursal/api-docs/**
+        - id: sucursal-service
+          uri: lb://MS-PROFESIONALES
+          predicates:
+            - Path=/api/v1/sucursales/**
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    instance-id: ${spring.application.name}:${server.port}
 
 springdoc:
-  swagger-ui:
-    path: /swagger-ui/index.html
-    urls:
-      - name: Microservicio Boleta
-        url: /boleta/api-docs
-      - name: Microservicio Comuna
-        url: /comuna/api-docs
-      - name: Microservicio Diagnóstico
-        url: /diagnostico/api-docs
-      - name: Microservicio Especialidad
-        url: /especialidad/api-docs
-      - name: Microservicio HistorialDiagnóstico
-        url: /historial-diagnostico/api-docs
-      - name: Microservicio Paciente
-        url: /paciente/api-docs
-      - name: Microservicio Previsión
-        url: /prevision/api-docs
-      - name: Microservicio Psicólogo
-        url: /psicologo/api-docs
-      - name: Microservicio Región
-        url: /region/api-docs
-      - name: Microservicio ReservaHora
-        url: /reserva-hora/api-docs
-      - name: Microservicio Sucursal
-        url: /sucursal/api-docs
   api-docs:
     enabled: true
+  swagger-ui:
+    path: /swagger-ui/index.html

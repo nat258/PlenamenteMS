@@ -14,5 +14,8 @@ public interface ReservaHoraRepository extends JpaRepository<ReservaHora, Intege
 
     // Busca las reservas de un paciente a traves de su id
     List<ReservaHora> findByPacienteId(Integer pacienteId);
+    
+    // Busca las reservas asignadas de un psicologo a traves de su id
+    List<ReservaHora> findByPsicologoId(Integer psicologoId);
 
 }

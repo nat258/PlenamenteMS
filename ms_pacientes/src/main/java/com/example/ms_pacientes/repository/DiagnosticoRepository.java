@@ -8,8 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 import com.example.ms_pacientes.model.Diagnostico;
 
-public interface DiagnosticoRepository extends JpaRepository<Diagnostico, Integer> {
-
+public interface DiagnosticoRepository extends JpaRepository<Diagnostico,Integer> {
 
     @Query("SELECT d FROM Diagnostico d JOIN d.historialesDiagnostico h WHERE h.paciente.rut = :rut")
     Optional<Diagnostico> findByPacienteRut(@Param("rut") String rut);

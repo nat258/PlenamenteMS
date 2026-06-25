@@ -33,8 +33,8 @@ public class Diagnostico {
 
     @Size(max = 100, message = "La descripcion debe contener maximo 100 caracteres!")
     private String descripcion;
-
+    
     @OneToMany(mappedBy = "diagnostico")
-    private List<HistorialDiagnostico> historiales;
+    private List<HistorialDiagnostico> historialesDiagnostico;
 
 }

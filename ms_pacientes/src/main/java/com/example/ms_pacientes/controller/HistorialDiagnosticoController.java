@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -86,6 +87,27 @@ public class HistorialDiagnosticoController {
         } catch (RuntimeException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @DeleteMapping("/{id}")
+    @Operation(summary = "Elimina historial de diagnosticos por su id", description = "Elimina el historial de diagnosticos por el id.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Historial de diagnosticos eliminado",
+                content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = HistorialDiagnosticoDTO.class))),
+            @ApiResponse(responseCode = "404", description = "Historial de diagnosticos no encontrado"),
+            @ApiResponse(responseCode = "400", description = "Solicitud incorrecta")
+    })
+    public ResponseEntity<String> eliminarHistorial(@PathVariable Integer id) {
+        String mensaje = historialService.eliminarHistorial(id);
+        if (mensaje.contains("no se encuentra registrado")) {
+            return new ResponseEntity<>(mensaje, HttpStatus.NOT_FOUND);
+        }
+
+        if (mensaje.contains("No se puede eliminar")) {
+            return new ResponseEntity<>(mensaje, HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(mensaje, HttpStatus.OK);
     }
 
     @GetMapping("/paciente/{id}")

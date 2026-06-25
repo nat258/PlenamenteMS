@@ -35,7 +35,11 @@ public class PsicologoController {
     @Operation(summary = "Obtener todos los psicólogos", description = "Obtiene una lista de todos los psicólogos registrados.")
     @ApiResponse(responseCode = "200", description = "Psicólogos obtenidos exitosamente")   
     public ResponseEntity<List<PsicologoDTO>> obtenerTodos() {
-        return ResponseEntity.ok(psicologoService.obtenerTodosLosPsicologos());
+        List<PsicologoDTO> lista = psicologoService.obtenerTodosLosPsicologos();
+        if (lista.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(lista);
     }
 
     //Obtener por id

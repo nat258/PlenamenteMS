@@ -29,6 +29,18 @@ public class ComunaController {
         this.comunaService = comunaService;
     }
 
+    // Obtener todas las comunas
+    @GetMapping
+    @Operation(summary = "Listar todas las comunas", description = "Obtiene una lista de todas las comunas registradas")
+    @ApiResponse(responseCode = "200", description = "Lista de comunas obtenida exitosamente")
+    public ResponseEntity<List<ComunaDTO>> obtenerTodas() {
+        List<ComunaDTO> lista = comunaService.obtenerTodas();
+        if (lista.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(lista);
+    }
+
     //Busqueda por Id 
     @GetMapping("/{id}")
     @Operation(summary = "Buscar comuna por ID", description = "Obtiene una comuna específica utilizando su ID único.")
