@@ -47,49 +47,40 @@ class PsicologoServiceTests {
         psicologoValido.setEspecialidades(List.of(especialidadEjemplo));
     }
 
-    // ==========================================
-    // PRUEBAS: eliminarPsicologo()
-    // ==========================================
+    
+    // Prueba eliminar Psicologo
+    
     @Test
     void eliminarPsicologo_Exitoso_DeberiaRetornarMensajeExito() {
         // Arrange
         when(psicologoRepository.findById(100)).thenReturn(Optional.of(psicologoValido));
         doNothing().when(psicologoRepository).delete(psicologoValido);
 
-        // Act
         String resultado = psicologoService.eliminarPsicologo(100);
 
-        // Assert
         assertEquals("Psicólogo eliminado con éxito", resultado);
         verify(psicologoRepository, times(1)).delete(psicologoValido);
     }
 
     @Test
     void eliminarPsicologo_NoExiste_DeberiaRetornarMensajeError() {
-        // Arrange
         when(psicologoRepository.findById(999)).thenReturn(Optional.empty());
 
-        // Act
         String resultado = psicologoService.eliminarPsicologo(999);
 
-        // Assert
         assertTrue(resultado.contains("Psicólogo no encontrado con el ID: 999"));
         verify(psicologoRepository, never()).delete(any(Psicologo.class));
     }
 
-    // ==========================================
-    // PRUEBAS: guardarPsicologo() y validaciones
-    // ==========================================
+    
+    // Pruebas guardarPsicologo() y validaciones
     @Test
     void guardarPsicologo_CaminoExitoso_DeberiaGuardarCorrectamente() {
-        // Arrange
         when(psicologoRepository.findByRut(12345678L)).thenReturn(Collections.emptyList());
         when(psicologoRepository.save(any(Psicologo.class))).thenReturn(psicologoValido);
 
-        // Act
         Psicologo resultado = psicologoService.guardarPsicologo(psicologoValido);
 
-        // Assert
         assertNotNull(resultado);
         assertEquals(12345678L, resultado.getRut());
         verify(psicologoRepository, times(1)).save(psicologoValido);
@@ -97,10 +88,10 @@ class PsicologoServiceTests {
 
     @Test
     void guardarPsicologo_RutYaExiste_DeberiaLanzarException() {
-        // Arrange
+        
         when(psicologoRepository.findByRut(12345678L)).thenReturn(List.of(psicologoValido));
 
-        // Act & Assert
+        
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
             psicologoService.guardarPsicologo(psicologoValido);
         });
@@ -110,10 +101,9 @@ class PsicologoServiceTests {
 
     @Test
     void guardarPsicologo_SinNombre_DeberiaLanzarExceptionPorValidacion() {
-        // Arrange
+        
         psicologoValido.setPNombre(""); // Nombre vacío invalida las reglas del negocio
 
-        // Act & Assert
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
             psicologoService.guardarPsicologo(psicologoValido);
         });
@@ -122,22 +112,21 @@ class PsicologoServiceTests {
 
     @Test
     void guardarPsicologo_SinEspecialidades_DeberiaLanzarExceptionPorValidacion() {
-        // Arrange
+    
         psicologoValido.setEspecialidades(new ArrayList<>()); // Lista vacía invalida las reglas
 
-        // Act & Assert
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
             psicologoService.guardarPsicologo(psicologoValido);
         });
         assertEquals("El psicólogo debe tener al menos una especialidad asignada.", exception.getMessage());
     }
 
-    // ==========================================
-    // PRUEBAS: actualizarPsicologo()
-    // ==========================================
+    
+    // Pruebas actualizarPsicologo
+    
     @Test
     void actualizarPsicologo_ExistenteYValido_DeberiaActualizarYGuardar() {
-        // Arrange
+        
         Psicologo datosNuevos = new Psicologo();
         datosNuevos.setRut(87654321L);
         datosNuevos.setPNombre("Andrés");
@@ -147,27 +136,23 @@ class PsicologoServiceTests {
         when(psicologoRepository.findById(100)).thenReturn(Optional.of(psicologoValido));
         when(psicologoRepository.save(any(Psicologo.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
-        // Act
         Psicologo resultado = psicologoService.actualizarPsicologo(100, datosNuevos);
 
-        // Assert
         assertNotNull(resultado);
         assertEquals("Andrés", resultado.getPNombre());
         assertEquals(87654321L, resultado.getRut());
     }
 
-    // ==========================================
-    // PRUEBAS: Consultas DTO (buscarPorId / buscarPorRut / obtenerTodos)
-    // ==========================================
+    
+    // Pruebas Consultas DTO (buscarPorId / buscarPorRut / obtenerTodos)
+    
     @Test
     void obtenerTodosLosPsicologos_DeberiaRetornarListaDeDTOs() {
-        // Arrange
+        
         when(psicologoRepository.findAll()).thenReturn(List.of(psicologoValido));
 
-        // Act
         List<PsicologoDTO> resultado = psicologoService.obtenerTodosLosPsicologos();
 
-        // Assert
         assertNotNull(resultado);
         assertEquals(1, resultado.size());
         assertEquals("Claudio", resultado.get(0).getP_nombre());
@@ -175,37 +160,33 @@ class PsicologoServiceTests {
 
     @Test
     void buscarPsicologoPorId_CuandoExiste_DeberiaRetornarDTO() {
-        // Arrange
+        
         when(psicologoRepository.findById(100)).thenReturn(Optional.of(psicologoValido));
 
-        // Act
         PsicologoDTO resultado = psicologoService.buscarPsicologoPorId(100);
 
-        // Assert
         assertNotNull(resultado);
         assertEquals("Claudio", resultado.getP_nombre());
     }
 
     @Test
     void buscarPsicologoPorRut_CuandoExiste_DeberiaRetornarDTO() {
-        // Arrange
+        
         // Pasamos "12345678" como String para cumplir la firma del método bajo prueba
         when(psicologoRepository.findByRut(12345678L)).thenReturn(List.of(psicologoValido));
 
-        // Act
         PsicologoDTO resultado = psicologoService.buscarPsicologoPorRut("12345678");
 
-        // Assert
         assertNotNull(resultado);
         assertEquals("Claudio", resultado.getP_nombre());
     }
 
     @Test
     void buscarPsicologoPorRut_CuandoNoExiste_DeberiaLanzarRuntimeException() {
-        // Arrange
+        
         when(psicologoRepository.findByRut(99999999L)).thenReturn(Collections.emptyList());
 
-        // Act & Assert
+        
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
             psicologoService.buscarPsicologoPorRut("99999999");
         });

@@ -42,19 +42,19 @@ class EspecialidadServiceTest {
         especialidadDTOEjemplo.setNombre("Terapia Cognitivo Conductual");
     }
 
-    // ==========================================
-    // PRUEBAS: buscarPorNombreParcial()
-    // ==========================================
+    
+    //Prueba buscar por nombre parcial
+    
     @Test
     void buscarPorNombreParcial_CuandoCoincide_DeberiaRetornarListaDTO() {
-        // Arrange
+        
         when(especialidadRepository.findByNombreContainingIgnoreCase("Cognitivo"))
                 .thenReturn(List.of(especialidadEjemplo));
 
-        // Act
+        
         List<EspecialidadDTO> resultado = especialidadService.buscarPorNombreParcial("Cognitivo");
 
-        // Assert
+        
         assertNotNull(resultado);
         assertEquals(1, resultado.size());
         assertEquals("Terapia Cognitivo Conductual", resultado.get(0).getNombre());
@@ -62,29 +62,27 @@ class EspecialidadServiceTest {
 
     @Test
     void buscarPorNombreParcial_SinCoincidencias_DeberiaLanzarRuntimeException() {
-        // Arrange
+        
         when(especialidadRepository.findByNombreContainingIgnoreCase("Inexistente"))
                 .thenReturn(Collections.emptyList());
 
-        // Act & Assert
+        
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
             especialidadService.buscarPorNombreParcial("Inexistente");
         });
         assertTrue(exception.getMessage().contains("No se encontraron especialidades que contengan"));
     }
 
-    // ==========================================
-    // PRUEBAS: buscarPorId()
-    // ==========================================
+    
+    // Prueba buscar por Id
+    
     @Test
     void buscarPorId_CuandoExiste_DeberiaRetornarDTO() {
-        // Arrange
+        
         when(especialidadRepository.findById(5)).thenReturn(Optional.of(especialidadEjemplo));
 
-        // Act
         EspecialidadDTO resultado = especialidadService.buscarPorId(5);
 
-        // Assert
         assertNotNull(resultado);
         assertEquals(5, resultado.getId());
         assertEquals("Terapia Cognitivo Conductual", resultado.getNombre());
@@ -92,28 +90,25 @@ class EspecialidadServiceTest {
 
     @Test
     void buscarPorId_CuandoNoExiste_DeberiaLanzarRuntimeException() {
-        // Arrange
+        
         when(especialidadRepository.findById(99)).thenReturn(Optional.empty());
 
-        // Act & Assert
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
             especialidadService.buscarPorId(99);
         });
         assertEquals("¡Especialidad no encontrada!", exception.getMessage());
     }
 
-    // ==========================================
-    // PRUEBAS: buscarPorPsicologo()
-    // ==========================================
+    
+    // Prueba buscar por Psicologo
+
     @Test
     void buscarPorPsicologo_CuandoTieneEspecialidades_DeberiaRetornarLista() {
-        // Arrange
+        
         when(especialidadRepository.findByPsicologosId(1)).thenReturn(List.of(especialidadEjemplo));
 
-        // Act
         List<EspecialidadDTO> resultado = especialidadService.buscarPorPsicologo(1);
 
-        // Assert
         assertNotNull(resultado);
         assertEquals(1, resultado.size());
         assertEquals("Terapia Cognitivo Conductual", resultado.get(0).getNombre());
@@ -121,31 +116,28 @@ class EspecialidadServiceTest {
 
     @Test
     void buscarPorPsicologo_SinEspecialidades_DeberiaLanzarRuntimeException() {
-        // Arrange
+        
         when(especialidadRepository.findByPsicologosId(2)).thenReturn(Collections.emptyList());
 
-        // Act & Assert
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
             especialidadService.buscarPorPsicologo(2);
         });
         assertTrue(exception.getMessage().contains("No se encontraron especialidades para el psicólogo"));
     }
 
-    // ==========================================
-    // PRUEBAS: registrarEspecialidad()
-    // ==========================================
+    
+    //Prueba registrar especialidad 
+    
     @Test
     void registrarEspecialidad_Exitoso_DeberiaGuardarYRetornarDTOConId() {
-        // Arrange
+
         especialidadDTOEjemplo.setId(null); // Simulamos que viene de la petición sin ID asignado aún
 
         when(especialidadRepository.existsByNombre("Terapia Cognitivo Conductual")).thenReturn(false);
         when(especialidadRepository.save(any(Especialidad.class))).thenReturn(especialidadEjemplo);
 
-        // Act
         EspecialidadDTO resultado = especialidadService.registrarEspecialidad(especialidadDTOEjemplo);
 
-        // Assert
         assertNotNull(resultado);
         assertEquals(5, resultado.getId()); // Comprueba que se mapeó de vuelta el ID generado por la persistencia
         assertEquals("Terapia Cognitivo Conductual", resultado.getNombre());
@@ -154,10 +146,8 @@ class EspecialidadServiceTest {
 
     @Test
     void registrarEspecialidad_NombreDuplicado_DeberiaLanzarRuntimeException() {
-        // Arrange
         when(especialidadRepository.existsByNombre("Terapia Cognitivo Conductual")).thenReturn(true);
 
-        // Act & Assert
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
             especialidadService.registrarEspecialidad(especialidadDTOEjemplo);
         });
