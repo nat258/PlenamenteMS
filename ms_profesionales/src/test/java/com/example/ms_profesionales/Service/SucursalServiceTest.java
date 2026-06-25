@@ -1,4 +1,4 @@
-package com.example.ms_profesionales.Service;
+package com.example.ms_profesionales.service;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
