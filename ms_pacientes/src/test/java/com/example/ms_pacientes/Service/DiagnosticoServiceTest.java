@@ -15,6 +15,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.example.ms_pacientes.DTO.DiagnosticoDTO;
@@ -35,7 +36,7 @@ public class DiagnosticoServiceTest {
 
 	@BeforeEach
 	void setUp() {
-		diagnosticoService = new DiagnosticoService(diagnosticoRepository);
+		MockitoAnnotations.openMocks(this);
 	}
 
 	private Diagnostico crearDiagnosticoFalso(Integer id, String nombre) {
