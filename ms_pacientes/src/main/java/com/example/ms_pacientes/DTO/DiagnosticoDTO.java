@@ -8,5 +8,6 @@ public class DiagnosticoDTO {
     private Integer id;
     private String nombre;
     private String descripcion;
+    private Integer pacienteId;
 
 }

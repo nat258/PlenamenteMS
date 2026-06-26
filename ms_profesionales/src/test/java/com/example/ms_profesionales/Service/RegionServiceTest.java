@@ -1,4 +1,4 @@
-package com.example.ms_profesionales.service;
+package com.example.ms_profesionales.Service;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -18,6 +18,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import com.example.ms_profesionales.DTO.RegionDTO;
 import com.example.ms_profesionales.model.Region;
 import com.example.ms_profesionales.repository.RegionRepository;
+import com.example.ms_profesionales.service.RegionService;
 
 
 @ExtendWith(MockitoExtension.class) 

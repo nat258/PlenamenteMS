@@ -1,4 +1,4 @@
-package com.example.ms_profesionales.service;
+package com.example.ms_profesionales.Service;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -23,6 +23,7 @@ import com.example.ms_profesionales.model.Psicologo;
 import com.example.ms_profesionales.model.Sucursal;
 import com.example.ms_profesionales.repository.ComunaRepository;
 import com.example.ms_profesionales.repository.SucursalRepository;
+import com.example.ms_profesionales.service.SucursalService;
 
 @ExtendWith(MockitoExtension.class) // Habilita el entorno de Mockito en JUnit 5
 class SucursalServiceTest {

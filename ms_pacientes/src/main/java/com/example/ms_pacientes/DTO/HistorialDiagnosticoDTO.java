@@ -11,6 +11,5 @@ public class HistorialDiagnosticoDTO {
     private LocalDate fecha;
     private String observacion;
     private Integer diagnosticoId;
-    private Integer pacienteId;
 
 }

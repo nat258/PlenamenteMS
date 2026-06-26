@@ -18,6 +18,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.example.ms_pacientes.DTO.HistorialDiagnosticoDTO;
@@ -44,8 +45,7 @@ public class HistorialDiagnosticoTest {
 
 	@BeforeEach
 	void setUp() {
-		historialDiagnosticoService = new HistorialDiagnosticoService(historialDiagnosticoRepository,
-				pacienteRepository);
+		MockitoAnnotations.openMocks(this);
 	}
 
 	private Paciente crearPacienteFalso(Integer id) {

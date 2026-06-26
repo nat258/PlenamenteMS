@@ -1,4 +1,4 @@
-package com.example.ms_profesionales.service;
+package com.example.ms_profesionales.Service;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -20,6 +20,7 @@ import com.example.ms_profesionales.DTO.PsicologoDTO;
 import com.example.ms_profesionales.model.Especialidad;
 import com.example.ms_profesionales.model.Psicologo;
 import com.example.ms_profesionales.repository.PsicologoRepository;
+import com.example.ms_profesionales.service.PsicologoService;
 
 
 @ExtendWith(MockitoExtension.class) // Habilita el entorno Mockito para JUnit 5
