@@ -55,14 +55,14 @@ class ComunaServiceTest {
     //Pruebas eliminar comunas
     @Test
     void eliminarComuna_Exitoso_DeberiaRetornarMensajeExito() {
-        // Arrange
+        
         when(comunaRepository.findById(50)).thenReturn(Optional.of(comunaEjemplo));
         doNothing().when(comunaRepository).delete(comunaEjemplo);
 
-        // Act
+        
         String resultado = comunaService.eliminarComuna(50);
 
-        // Assert
+        
         assertEquals("Comuna eliminada con éxito", resultado);
         verify(comunaRepository, times(1)).delete(comunaEjemplo);
     }
@@ -82,7 +82,7 @@ class ComunaServiceTest {
     
     @Test
     void registrarComuna_Exitoso_DeberiaGuardarYRetornarDTOConId() {
-        // Arrange
+        
         comunaDTOEjemplo.setId(null); // Simulamos que llega desde el request sin ID
 
         when(comunaRepository.existsByNombre("Providencia")).thenReturn(false);
@@ -111,13 +111,13 @@ class ComunaServiceTest {
     // Prueba buscar por Id.
     @Test
     void buscarPorId_CuandoExiste_DeberiaRetornarDTO() {
-        // Arrange
+        
         when(comunaRepository.findById(50)).thenReturn(Optional.of(comunaEjemplo));
 
-        // Act
+        
         ComunaDTO resultado = comunaService.buscarPorId(50);
 
-        // Assert
+        
         assertNotNull(resultado);
         assertEquals(50, resultado.getId());
         assertEquals("Providencia", resultado.getNombre());
@@ -128,7 +128,7 @@ class ComunaServiceTest {
     void buscarPorId_CuandoNoExiste_DeberiaLanzarRuntimeException() {
         when(comunaRepository.findById(999)).thenReturn(Optional.empty());
 
-        // Act & Assert
+        
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
             comunaService.buscarPorId(999);
         });
@@ -140,13 +140,11 @@ class ComunaServiceTest {
     
     @Test
     void buscarPorNombre_DeberiaRetornarListaDeDTOs() {
-        // Arrange
+        
         when(comunaRepository.findByNombreContainingIgnoreCase("Providencia")).thenReturn(List.of(comunaEjemplo));
 
-        // Act
         List<ComunaDTO> resultado = comunaService.buscarPorNombre("Providencia");
 
-        // Assert
         assertNotNull(resultado);
         assertEquals(1, resultado.size());
         assertEquals("Providencia", resultado.get(0).getNombre());
@@ -157,13 +155,11 @@ class ComunaServiceTest {
     
     @Test
     void buscarPorNombreParcial_CuandoCoincide_DeberiaRetornarListaDTO() {
-        // Arrange
+        
         when(comunaRepository.findByNombreContainingIgnoreCase("Provi")).thenReturn(List.of(comunaEjemplo));
-
-        // Act
+        
         List<ComunaDTO> resultado = comunaService.buscarPorNombreParcial("Provi");
-
-        // Assert
+        
         assertNotNull(resultado);
         assertEquals(1, resultado.size());
         assertEquals("Providencia", resultado.get(0).getNombre());
