@@ -53,17 +53,17 @@ class SucursalServiceTest {
     }
 
     
-    // PRUEBAS: obtenerTodos()
+    // Prueba obtener todas las sucursales
     
     @Test
     void obtenerTodos_DeberiaRetornarListaDeDTOs() {
-        // Arrange
+        
         when(sucursalRepository.findAll()).thenReturn(List.of(sucursalEjemplo));
 
-        // Act
+        
         List<SucursalDTO> resultado = sucursalService.obtenerTodos();
 
-        // Assert
+        
         assertNotNull(resultado);
         assertEquals(1, resultado.size());
         assertEquals("Sucursal Central", resultado.get(0).getNombre());
@@ -71,17 +71,15 @@ class SucursalServiceTest {
     }
 
     
-    // PRUEBAS: buscarPorId()
+    //Prueba buscar por Id
     
     @Test
     void buscarPorId_CuandoExiste_DeberiaRetornarDTO() {
-        // Arrange
+        
         when(sucursalRepository.findById(10)).thenReturn(Optional.of(sucursalEjemplo));
 
-        // Act
         SucursalDTO resultado = sucursalService.buscarPorId(10);
 
-        // Assert
         assertNotNull(resultado);
         assertEquals(10, resultado.getId());
         assertEquals("Sucursal Central", resultado.getNombre());
@@ -100,7 +98,7 @@ class SucursalServiceTest {
     }
 
     
-    // PRUEBAS: guardarSucursal()
+    //Prueba guardar nueva sucursal
     
     @Test
     void guardarSucursal_CaminoExitoso_DeberiaGuardarCorrectamente() {
@@ -109,10 +107,9 @@ class SucursalServiceTest {
         when(sucursalRepository.findByNombreIgnoreCase("Sucursal Central")).thenReturn(Optional.empty());
         when(sucursalRepository.save(any(Sucursal.class))).thenReturn(sucursalEjemplo);
 
-        // Act
+    
         SucursalDTO resultado = sucursalService.guardarSucursal(sucursalEjemplo);
 
-        // Assert
         assertNotNull(resultado);
         assertEquals("Sucursal Central", resultado.getNombre());
         verify(sucursalRepository, times(1)).save(any(Sucursal.class));
@@ -120,10 +117,9 @@ class SucursalServiceTest {
 
     @Test
     void guardarSucursal_SinComuna_DeberiaLanzarException() {
-        // Arrange
+        
         sucursalEjemplo.setComuna(null);
 
-        // Act & Assert
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
             sucursalService.guardarSucursal(sucursalEjemplo);
         });
@@ -132,10 +128,9 @@ class SucursalServiceTest {
 
     @Test
     void guardarSucursal_ComunaNoExiste_DeberiaLanzarException() {
-        // Arrange
+        
         when(comunaRepository.existsById(1)).thenReturn(false);
 
-        // Act & Assert
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
             sucursalService.guardarSucursal(sucursalEjemplo);
         });
@@ -144,53 +139,50 @@ class SucursalServiceTest {
 
     @Test
     void guardarSucursal_NombreDuplicado_DeberiaLanzarException() {
-        // Arrange
+        
         when(comunaRepository.existsById(1)).thenReturn(true);
         when(sucursalRepository.findByNombreIgnoreCase("Sucursal Central")).thenReturn(Optional.of(sucursalEjemplo));
 
-        // Act & Assert
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
             sucursalService.guardarSucursal(sucursalEjemplo);
         });
         assertEquals("El nombre de sucursal ya se encuentra registrado!", exception.getMessage());
     }
 
-    // ==========================================
-    // PRUEBAS: eliminarSucursal()
-    // ==========================================
+    
+    // Prueba Eliminar sucursal
+    
     @Test
     void eliminarSucursal_Exitoso_DeberiaRetornarMensajeExito() {
-        // Arrange
+        
         when(sucursalRepository.findById(10)).thenReturn(Optional.of(sucursalEjemplo));
         doNothing().when(sucursalRepository).delete(sucursalEjemplo);
 
-        // Act
+        
         String resultado = sucursalService.eliminarSucursal(10);
 
-        // Assert
+        
         assertEquals("Sucursal 'Sucursal Central' eliminada con exito", resultado);
         verify(sucursalRepository, times(1)).delete(sucursalEjemplo);
     }
 
     @Test
     void eliminarSucursal_ConPsicologosAsociados_DeberiaCapturarDataIntegrityViolationException() {
-        // Arrange
+        
         when(sucursalRepository.findById(10)).thenReturn(Optional.of(sucursalEjemplo));
         doThrow(DataIntegrityViolationException.class).when(sucursalRepository).delete(sucursalEjemplo);
 
-        // Act
         String resultado = sucursalService.eliminarSucursal(10);
 
-        // Assert
         assertEquals("No se puede eliminar la sucursal porque tiene psicologos asociados", resultado);
     }
 
-    // ==========================================
-    // PRUEBAS: obtenerPsicologosPorSucursal()
-    // ==========================================
+    
+    // Prueba obtener Psicologo por sucursal
+    
     @Test
     void obtenerPsicologosPorSucursal_ConPsicologos_DeberiaRetornarLista() {
-        // Arrange
+        
         when(sucursalRepository.findById(10)).thenReturn(Optional.of(sucursalEjemplo));
         
         Psicologo psicologo = new Psicologo();
@@ -202,10 +194,10 @@ class SucursalServiceTest {
         
         when(sucursalRepository.buscarPsicologosPorSucursal(10)).thenReturn(List.of(psicologo));
 
-        // Act
+        
         List<PsicologoDTO> resultado = sucursalService.obtenerPsicologosPorSucursal(10);
 
-        // Assert
+        
         assertNotNull(resultado);
         assertEquals(1, resultado.size());
         assertEquals("Juan", resultado.get(0).getP_nombre());
@@ -213,11 +205,11 @@ class SucursalServiceTest {
 
     @Test
     void obtenerPsicologosPorSucursal_Vacio_DeberiaLanzarException() {
-        // Arrange
+        
         when(sucursalRepository.findById(10)).thenReturn(Optional.of(sucursalEjemplo));
         when(sucursalRepository.buscarPsicologosPorSucursal(10)).thenReturn(Collections.emptyList());
 
-        // Act & Assert
+        
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
             sucursalService.obtenerPsicologosPorSucursal(10);
         });

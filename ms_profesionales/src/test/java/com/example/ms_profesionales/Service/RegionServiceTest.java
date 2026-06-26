@@ -82,14 +82,12 @@ class RegionServiceTest {
     // Prueba guardarRegion()
     @Test
     void guardarRegion_CaminoExitoso_DeberiaGuardarCorrectamente() {
-        // Arrange
+    
         when(regionRepository.existsByNombreIgnoreCase("Metropolitana")).thenReturn(false);
         when(regionRepository.save(any(Region.class))).thenReturn(regionEjemplo);
 
-        // Act
         RegionDTO resultado = regionService.guardarRegion(regionEjemplo);
 
-        // Assert
         assertNotNull(resultado);
         assertEquals("Metropolitana", resultado.getNombre());
         verify(regionRepository, times(1)).save(any(Region.class));
@@ -97,10 +95,9 @@ class RegionServiceTest {
 
     @Test
     void guardarRegion_NombreYaExiste_DeberiaLanzarException() {
-        // Arrange
+        
         when(regionRepository.existsByNombreIgnoreCase("Metropolitana")).thenReturn(true);
 
-        // Act & Assert
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
             regionService.guardarRegion(regionEjemplo);
         });
@@ -158,7 +155,7 @@ class RegionServiceTest {
     
     @Test
     void eliminarRegion_Exitoso_DeberiaRetornarMensajeExito() {
-        // Arrange
+        
         when(regionRepository.findById(1)).thenReturn(Optional.of(regionEjemplo));
         doNothing().when(regionRepository).delete(regionEjemplo);
 
@@ -179,18 +176,16 @@ class RegionServiceTest {
         assertEquals("No se puede eliminar la Region porque tiene comunas asociadas", resultado);
     }
 
-    // ==========================================
-    // PRUEBAS: encontrarPorNombre()
-    // ==========================================
+    
+    // Prueba encontrar por nombre 
+    
     @Test
     void encontrarPorNombre_DeberiaRetornarListaFiltrada() {
-        // Arrange
+        
         when(regionRepository.findByNombreContainingIgnoreCase("metro")).thenReturn(List.of(regionEjemplo));
 
-        // Act
         List<RegionDTO> resultado = regionService.encontrarPorNombre("metro");
 
-        // Assert
         assertNotNull(resultado);
         assertEquals(1, resultado.size());
         assertEquals("Metropolitana", resultado.get(0).getNombre());
