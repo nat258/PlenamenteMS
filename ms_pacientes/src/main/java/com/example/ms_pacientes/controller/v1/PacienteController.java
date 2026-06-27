@@ -1,4 +1,4 @@
-package com.example.ms_pacientes.controller;
+package com.example.ms_pacientes.controller.v1;
 
 import java.util.List;
 
@@ -25,7 +25,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
-@RestController
+@RestController("PacienteControllerV1")
 @RequestMapping("/api/v1/pacientes")
 @Tag(name = "Pacientes", description = "Operaciones relacionadas a Pacientes")
 public class PacienteController {
@@ -54,7 +54,7 @@ public class PacienteController {
     }
 
     //CONEXION
-    //BUSCAR PACIENTE POR ID
+    //BUSCAR PACIENTE POR ID funcionando
     @GetMapping("/id/{id}")
     @Operation(summary = "Muestra al paciente mediante a su id", description = "Muestra el paciente asociado al id que ingresemos.")
     @ApiResponses(value = {
@@ -73,7 +73,7 @@ public class PacienteController {
     }
 
 
-    // Buscar por RUT
+    // Buscar por RUT funcionando
     @GetMapping("/rut/{rut}")
     @Operation(summary = "Muestra al paciente mediante a su rut", description = "Muestra el paciente asociado al rut que ingresemos.")
     @ApiResponses(value = {
@@ -91,7 +91,7 @@ public class PacienteController {
         }
     }
 
-    // Guardar un nuevo paciente
+    // Guardar un nuevo paciente funcionando
     @PostMapping
     @Operation(summary = "Guarda el paciente en la BBDD", description = "Guarda el paciente en la Base de Datos.")
     @ApiResponses(value = {
@@ -109,7 +109,7 @@ public class PacienteController {
         }
     }
 
-    //Actualizar paciente existente
+    //Actualizar paciente existente funcionando
     @PutMapping("/rut/{rut}")
     @Operation(summary = "Actualiza informacion de un paciente con RUT", description = "Actualiza la informacion de un paciente mediante el rut.")
     @ApiResponses(value = {
@@ -127,7 +127,7 @@ public class PacienteController {
         }
     }
 
-    //Eliminar paciente
+    //Eliminar paciente funcionando
     @DeleteMapping("/rut/{rut}")
     @Operation(summary = "Elimina un paciente de la BBDD con RUT", description = "Elimina a un paciente de la base de datos mediante el rut del paciente al que queremos eliminar.")
     @ApiResponses(value = {

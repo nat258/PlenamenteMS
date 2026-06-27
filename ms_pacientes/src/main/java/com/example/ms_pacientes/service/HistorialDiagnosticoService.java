@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.example.ms_pacientes.DTO.HistorialDiagnosticoDTO;
@@ -74,19 +73,10 @@ public class HistorialDiagnosticoService {
         return convertirADTO(guardado);
     }
 
-    public String eliminarHistorial(Integer id) {
-        try {
-            HistorialDiagnostico hist = historialDiagnosticoRepository.findById(id)
-                        .orElseThrow(() -> new RuntimeException("El historial con ID " + id + " no se encuentra registrado!"));
-
-            historialDiagnosticoRepository.delete(hist);
-            return "Historial de diagnostico " + id + " eliminada con exito";
-
-        } catch (DataIntegrityViolationException e) {
-            return "No se puede eliminar el historial porque actualmente esta conectado a un paciente";
-        } catch (Exception e) {
-            return e.getMessage();
-        }
+    public HistorialDiagnosticoDTO obtenerPorId(Integer id) {
+        HistorialDiagnostico historial = historialDiagnosticoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("El historial con ID " + id + " no se encuentra registrado!"));
+        return convertirADTO(historial);
     }
 
     public List<HistorialDiagnosticoDTO> diagnosticoPorIdPaciente(Integer id) {
