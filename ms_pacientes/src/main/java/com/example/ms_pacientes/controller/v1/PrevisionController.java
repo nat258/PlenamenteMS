@@ -1,4 +1,4 @@
-package com.example.ms_pacientes.controller;
+package com.example.ms_pacientes.controller.v1;
 
 import java.util.List;
 
@@ -25,7 +25,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
-@RestController
+@RestController("PrevisionControllerV1")
 @RequestMapping("/api/v1/prevision")
 @Tag(name = "Previsiones", description = "Operaciones relacionadas a Previsiones")
 public class PrevisionController {

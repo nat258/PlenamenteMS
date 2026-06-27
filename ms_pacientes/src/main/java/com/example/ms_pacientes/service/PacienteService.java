@@ -98,8 +98,12 @@ public class PacienteService {
         dto.setId(paciente.getId());
         dto.setRut(paciente.getRut());
         dto.setP_nombre(paciente.getPNombre());
+        dto.setS_nombre(paciente.getSNombre());
         dto.setP_apellido(paciente.getPApellido());
+        dto.setS_apellido(paciente.getSApellido());
         dto.setCorreo(paciente.getCorreo());
+        dto.setTelefono(paciente.getNumero());
+        dto.setDireccion(paciente.getDireccion());
         
         if (paciente.getPrevision() != null) {
             dto.setPrevisionId(paciente.getPrevision().getId());
