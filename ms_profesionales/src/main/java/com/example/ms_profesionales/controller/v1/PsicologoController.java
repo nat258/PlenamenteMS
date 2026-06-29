@@ -1,4 +1,4 @@
-package com.example.ms_profesionales.controller;
+package com.example.ms_profesionales.controller.v1;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +19,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-@RestController
+@RestController("PsicologoControllerV1")
 @RequestMapping("/api/v1/psicologos")
 @Tag(name = "Psicologo Controller", description = "Endpoints para gestionar psicólogos")
 public class PsicologoController {
@@ -78,7 +78,7 @@ public class PsicologoController {
     @ApiResponse(responseCode = "400", description = "Datos del psicólogo inválidos")
     public ResponseEntity<Object> agregarPsicologo(@RequestBody Psicologo psicologo) {
         try {
-            Psicologo guardado = psicologoService.guardarPsicologo(psicologo);
+            PsicologoDTO guardado = psicologoService.guardarPsicologo(psicologo);
             return new ResponseEntity<>(guardado, HttpStatus.CREATED);
         } catch (RuntimeException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
@@ -92,7 +92,7 @@ public class PsicologoController {
     @ApiResponse(responseCode = "404", description = "Psicólogo no encontrado")
     public ResponseEntity<Object> actualizarPsicologo(@PathVariable Integer id, @RequestBody Psicologo psicologo) {
         try {
-            Psicologo editado = psicologoService.actualizarPsicologo(id, psicologo);
+            PsicologoDTO editado = psicologoService.actualizarPsicologo(id, psicologo);
             return new ResponseEntity<>(editado, HttpStatus.OK);
         } catch (RuntimeException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);

@@ -24,7 +24,7 @@ public class RegionService {
         return regionRepository.findAll().stream()
                 .map(this::convertirADTO)
                 .toList();
-    }   
+    }
 
     public RegionDTO buscarPorId(Integer id) {
         Region encontrada = regionRepository.findById(id)
