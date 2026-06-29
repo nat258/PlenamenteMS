@@ -1,4 +1,4 @@
-package com.example.ms_profesionales.controller;
+package com.example.ms_profesionales.controller.v1;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +17,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 
-@RestController
+@RestController("EspecialidadControllerV1")
 @RequestMapping("/api/v1/especialidades")
 @Tag(name = "Especialidad Controller", description = "Endpoints para gestionar especialidades")
 public class EspecialidadController {

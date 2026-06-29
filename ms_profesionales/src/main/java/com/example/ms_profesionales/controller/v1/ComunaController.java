@@ -1,4 +1,4 @@
-package com.example.ms_profesionales.controller;
+package com.example.ms_profesionales.controller.v1;
 
 import java.util.List;
 import org.springframework.http.HttpStatus;
@@ -18,7 +18,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-@RestController
+@RestController("ComunaControllerV1")
 @RequestMapping("/api/v1/comunas")
 @Tag(name = "Comuna Controller", description = "Endpoints para gestionar comunas")
 public class ComunaController {
