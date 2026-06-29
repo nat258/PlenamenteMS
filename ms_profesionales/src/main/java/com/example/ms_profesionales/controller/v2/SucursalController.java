@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.ms_profesionales.DTO.RegionDTO;
 import com.example.ms_profesionales.DTO.SucursalDTO;
 import com.example.ms_profesionales.assembler.SucursalModelAssembler;
+import com.example.ms_profesionales.model.Sucursal;
 import com.example.ms_profesionales.service.SucursalService;
 
 import jakarta.validation.Valid;
@@ -60,29 +60,28 @@ public class SucursalController {
     }
 
     @PostMapping(produces = MediaTypes.HAL_JSON_VALUE)
-public ResponseEntity<EntityModel<RegionDTO>> crear(@Valid @RequestBody RegionDTO regionDTO) {
-    try {
-        // 1. Creamos la entidad Region que el servicio "guardarRegion" espera recibir
-        com.example.ms_profesionales.model.Region regionEntidad = new com.example.ms_profesionales.model.Region();
-        regionEntidad.setId(regionDTO.getId());
-        regionEntidad.setNombre(regionDTO.getNombre());
+    public ResponseEntity<EntityModel<SucursalDTO>> crear(@Valid @RequestBody SucursalDTO sucursalDTO) {
+        try {
+            Sucursal sucursalEntidad = new Sucursal();
+            sucursalEntidad.setId(sucursalDTO.getId());
+            
+            sucursalEntidad.setNombre(sucursalDTO.getNombre());
+            sucursalEntidad.setDireccion(sucursalDTO.getDireccion());
 
-        // 2. Ahora sí, le pasamos la entidad al método (que devuelve un RegionDTO)
-        RegionDTO guardada = regionService.guardarRegion(regionEntidad);
+            SucursalDTO guardada = sucursalService.guardarSucursal(sucursalEntidad);
 
-        // 3. Construimos la URI de forma segura y dinámica para evitar problemas con methodOn
-        java.net.URI location = org.springframework.web.servlet.support.ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(guardada.getId())
-                .toUri();
+            java.net.URI location = org.springframework.web.servlet.support.ServletUriComponentsBuilder
+                    .fromCurrentRequest()
+                    .path("/{id}")
+                    .buildAndExpand(guardada.getId())
+                    .toUri();
 
-        return ResponseEntity
-                .created(location)
-                .body(assembler.toModel(guardada));
+            return ResponseEntity
+                    .created(location)
+                    .body(assembler.toModel(guardada));
 
-    } catch (RuntimeException e) {
-        return ResponseEntity.badRequest().build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
-}
 }

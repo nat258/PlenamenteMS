@@ -14,11 +14,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.example.ms_pacientes.DTO.HistorialDiagnosticoDTO;
@@ -40,13 +39,10 @@ public class HistorialDiagnosticoTest {
 	@Mock
 	private PacienteRepository pacienteRepository;
 
+	@InjectMocks
 	private HistorialDiagnosticoService historialDiagnosticoService;
-	private Faker faker = new Faker();
 
-	@BeforeEach
-	void setUp() {
-		MockitoAnnotations.openMocks(this);
-	}
+	private Faker faker = new Faker();
 
 	private Paciente crearPacienteFalso(Integer id) {
 		Paciente paciente = new Paciente();
@@ -63,7 +59,7 @@ public class HistorialDiagnosticoTest {
 	private Diagnostico crearDiagnosticoFalso(Integer id) {
 		Diagnostico diagnostico = new Diagnostico();
 		diagnostico.setId(id);
-		diagnostico.setNombre(faker.medical().diseaseName());
+		diagnostico.setNombre(faker.disease().anyDisease());
 		diagnostico.setDescripcion(faker.lorem().sentence());
 		return diagnostico;
 	}

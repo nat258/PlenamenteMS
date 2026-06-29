@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 
 import com.example.ms_profesionales.DTO.PsicologoDTO;
 import com.example.ms_profesionales.DTO.SucursalDTO;
-import com.example.ms_profesionales.model.Especialidad;
 import com.example.ms_profesionales.model.Psicologo;
 import com.example.ms_profesionales.model.Sucursal;
 import com.example.ms_profesionales.repository.ComunaRepository;
@@ -146,11 +145,11 @@ public class SucursalService {
 
         if(psicologo.getEspecialidades() != null) {
             dto.setEspecialidadesId(psicologo.getEspecialidades().stream()
-                    .map(Especialidad::getId)
+                    .map(e -> e.getId())
                     .toList());
 
             dto.setNombresEspecialidades(psicologo.getEspecialidades().stream()
-                    .map(Especialidad::getNombre)
+                    .map(e -> e.getNombre())
                     .toList());
         }
 

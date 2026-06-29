@@ -5,7 +5,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -74,18 +73,20 @@ class PsicologoServiceTests {
         verify(psicologoRepository, never()).delete(any(Psicologo.class));
     }
 
-    
+
     // Pruebas guardarPsicologo() y validaciones
     @Test
     void guardarPsicologo_CaminoExitoso_DeberiaGuardarCorrectamente() {
-        when(psicologoRepository.findByRut(12345678L)).thenReturn(Collections.emptyList());
+        when(psicologoRepository.findByRut(12345678L)).thenReturn(new ArrayList<>());
+        
         when(psicologoRepository.save(any(Psicologo.class))).thenReturn(psicologoValido);
 
-        Psicologo resultado = psicologoService.guardarPsicologo(psicologoValido);
+        PsicologoDTO resultado = psicologoService.guardarPsicologo(psicologoValido);
 
         assertNotNull(resultado);
         assertEquals(12345678L, resultado.getRut());
-        verify(psicologoRepository, times(1)).save(psicologoValido);
+        
+        verify(psicologoRepository, times(1)).save(any(Psicologo.class));
     }
 
     @Test
@@ -138,10 +139,10 @@ class PsicologoServiceTests {
         when(psicologoRepository.findById(100)).thenReturn(Optional.of(psicologoValido));
         when(psicologoRepository.save(any(Psicologo.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
-        Psicologo resultado = psicologoService.actualizarPsicologo(100, datosNuevos);
+        PsicologoDTO resultado = psicologoService.actualizarPsicologo(100, datosNuevos);
 
         assertNotNull(resultado);
-        assertEquals("Andrés", resultado.getPNombre());
+        assertEquals("Andrés", resultado.getP_nombre());
         assertEquals(87654321L, resultado.getRut());
     }
 
@@ -185,13 +186,12 @@ class PsicologoServiceTests {
 
     @Test
     void buscarPsicologoPorRut_CuandoNoExiste_DeberiaLanzarRuntimeException() {
-        
-        when(psicologoRepository.findByRut(99999999L)).thenReturn(Collections.emptyList());
+        when(psicologoRepository.findByRut(99999999L)).thenReturn(new ArrayList<>());
 
-        
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
             psicologoService.buscarPsicologoPorRut("99999999");
         });
+        
         assertTrue(exception.getMessage().contains("Psicologo no encontrado con Rut"));
     }
 }

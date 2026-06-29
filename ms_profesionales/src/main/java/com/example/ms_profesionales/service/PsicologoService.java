@@ -4,9 +4,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.example.ms_profesionales.DTO.PsicologoDTO;
-import com.example.ms_profesionales.model.Especialidad;
 import com.example.ms_profesionales.model.Psicologo;
-import com.example.ms_profesionales.model.Sucursal;
 import com.example.ms_profesionales.repository.PsicologoRepository;
 
 import jakarta.transaction.Transactional;
@@ -99,10 +97,10 @@ public class PsicologoService {
 
         if (psicologo.getEspecialidades() != null && !psicologo.getEspecialidades().isEmpty()) {
             dto.setEspecialidadesId(psicologo.getEspecialidades().stream()
-                .map(Especialidad::getId)
+                .map(e -> e.getId())
                 .toList());
             dto.setNombresEspecialidades(psicologo.getEspecialidades().stream()
-                .map(Especialidad::getNombre)
+                .map(e -> e.getNombre())
                 .toList());
         } else {
             dto.setEspecialidadesId(List.of());
@@ -111,7 +109,7 @@ public class PsicologoService {
 
         if (psicologo.getSucursales() != null && !psicologo.getSucursales().isEmpty()) {
             dto.setSucursalesId(psicologo.getSucursales().stream()
-                .map(Sucursal::getId)
+                .map(s -> s.getId())
                 .toList());
         } else {
             dto.setSucursalesId(List.of());
