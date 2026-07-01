@@ -1,7 +1,10 @@
 package com.example.ms_agendamiento.DTO;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import lombok.Data;
 
 @Data
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class PacienteResponseDTO {
     
     private Integer id;
