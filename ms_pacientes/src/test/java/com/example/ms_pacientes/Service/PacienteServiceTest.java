@@ -34,6 +34,7 @@ public class PacienteServiceTest {
 	@Mock
 	private PacienteRepository pacienteRepository;
 
+	@InjectMocks
 	private PacienteService pacienteService;
 	private Faker faker = new Faker();
 
