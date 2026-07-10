@@ -1,11 +1,14 @@
 server:
   port: 0
   forward-headers-strategy: framework
+  
 
 springdoc:
   api-docs:
     path: /profesionales/api-docs 
-  packages-to-scan: com.example.ms_profesionales.controller 
+  packages-to-scan: com.example.ms_profesionales.controller
+  hateoas:        
+    enabled: false
 
 eureka:
   client:
@@ -84,3 +87,5 @@ spring:
   jpa:
     hibernate:
       ddl-auto: none
+
+ 
