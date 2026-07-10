@@ -1,0 +1,98 @@
+version: '3.8'
+
+services:
+  mariadb-db:
+    image: mariadb:10.11
+    container_name: mariadb-db
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ""
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      # Creamos la base de datos que tu microservicio espera encontrar
+      MYSQL_DATABASE: db_agendamiento
+    networks:
+      - network-plenamente
+    healthcheck:
+      test: ["CMD", "mariadb-admin", "ping", "-h", "localhost", "-u", "root"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+
+  eureka-server:
+    build: ./eureka
+    container_name: eureka-server
+    ports:
+      - "8761:8761" # El puerto que encontramos en tu primer archivo
+    networks:
+      - network-plenamente
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8761/actuator/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  api-gateway:
+    build: ./gateway
+    container_name: api-gateway
+    ports:
+      - "8090:8090" # <-- CORREGIDO: Cambiado de 8080 al 8090 real de tu Gateway
+    environment:
+      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka-server:8761/eureka/
+      SPRING_PROFILES_ACTIVE: dev
+    networks:
+      - network-plenamente
+    depends_on:
+      eureka-server:
+        condition: service_healthy
+
+  ms-agendamiento:
+    build: ./ms_agendamiento
+    container_name: ms-agendamiento
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka-server:8761/eureka/
+      # Sobrescribimos el 'localhost' por 'mariadb-db' para que Java encuentre la base de datos en Docker
+      SPRING_DATASOURCE_URL: jdbc:mysql://mariadb-db:3306/db_agendamiento?createDatabaseIfNotExist=true
+    networks:
+      - network-plenamente
+    depends_on:
+      mariadb-db:
+        condition: service_healthy
+      eureka-server:
+        condition: service_healthy
+
+  ms-pacientes:
+    build: ./ms_pacientes
+    container_name: ms-pacientes
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka-server:8761/eureka/
+      SPRING_DATASOURCE_URL: jdbc:mysql://mariadb-db:3306/db_agendamiento?createDatabaseIfNotExist=true
+    networks:
+      - network-plenamente
+    depends_on:
+      mariadb-db:
+        condition: service_healthy
+      eureka-server:
+        condition: service_healthy
+
+  ms-profesionales:
+    build: ./ms_profesionales
+    container_name: ms-profesionales
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka-server:8761/eureka/
+      SPRING_DATASOURCE_URL: jdbc:mysql://mariadb-db:3306/db_agendamiento?createDatabaseIfNotExist=true
+    networks:
+      - network-plenamente
+    depends_on:
+      mariadb-db:
+        condition: service_healthy
+      eureka-server:
+        condition: service_healthy
+
+networks:
+  network-plenamente:
+    driver: bridge
