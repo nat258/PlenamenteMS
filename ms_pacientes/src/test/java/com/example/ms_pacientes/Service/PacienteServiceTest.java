@@ -1,4 +1,5 @@
 package com.example.ms_pacientes.Service;
+import org.mockito.InjectMocks;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
