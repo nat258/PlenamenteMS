@@ -17,7 +17,7 @@ eureka:
 
 spring:
   application:
-    name: MS-PROFESIONALES # ⚠️ 
+    name: MS-PROFESIONALES 
   profiles:
     active: dev
   cloud:
