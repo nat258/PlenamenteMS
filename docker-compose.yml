@@ -9,7 +9,8 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: ""
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
-      MYSQL_DATABASE: db_plenamente
+      # Creamos la base de datos que tu microservicio espera encontrar
+      MYSQL_DATABASE: db_agendamiento
     networks:
       - network-plenamente
     healthcheck:
@@ -22,7 +23,7 @@ services:
     build: ./eureka
     container_name: eureka-server
     ports:
-      - "8761:8761" 
+      - "8761:8761" # El puerto que encontramos en tu primer archivo
     networks:
       - network-plenamente
     healthcheck:
@@ -36,10 +37,10 @@ services:
     build: ./gateway
     container_name: api-gateway
     ports:
-      - "8090:8090" 
+      - "8090:8090" # <-- CORREGIDO: Cambiado de 8080 al 8090 real de tu Gateway
     environment:
       EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka-server:8761/eureka/
-      SPRING_PROFILES_ACTIVE: prod
+      SPRING_PROFILES_ACTIVE: dev
     networks:
       - network-plenamente
     depends_on:
@@ -47,13 +48,13 @@ services:
         condition: service_healthy
 
   ms-agendamiento:
-    build: ./ms-agendamiento
+    build: ./ms_agendamiento
     container_name: ms-agendamiento
     environment:
-      SPRING_PROFILES_ACTIVE: prod
+      SPRING_PROFILES_ACTIVE: dev
       EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka-server:8761/eureka/
-      DATABASE_HOST: mariadb-db
-      GATEWAY_URL: http://api-gateway:8090
+      # Sobrescribimos el 'localhost' por 'mariadb-db' para que Java encuentre la base de datos en Docker
+      SPRING_DATASOURCE_URL: jdbc:mysql://mariadb-db:3306/db_agendamiento?createDatabaseIfNotExist=true
     networks:
       - network-plenamente
     depends_on:
@@ -63,13 +64,12 @@ services:
         condition: service_healthy
 
   ms-pacientes:
-    build: ./ms-pacientes
+    build: ./ms_pacientes
     container_name: ms-pacientes
     environment:
-      SPRING_PROFILES_ACTIVE: prod
+      SPRING_PROFILES_ACTIVE: dev
       EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka-server:8761/eureka/
-      DATABASE_HOST: mariadb-db
-      GATEWAY_URL: http://api-gateway:8090
+      SPRING_DATASOURCE_URL: jdbc:mysql://mariadb-db:3306/db_agendamiento?createDatabaseIfNotExist=true
     networks:
       - network-plenamente
     depends_on:
@@ -79,13 +79,12 @@ services:
         condition: service_healthy
 
   ms-profesionales:
-    build: ./ms-profesionales
+    build: ./ms_profesionales
     container_name: ms-profesionales
     environment:
-      SPRING_PROFILES_ACTIVE: prod
+      SPRING_PROFILES_ACTIVE: dev
       EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka-server:8761/eureka/
-      DATABASE_HOST: mariadb-db
-      GATEWAY_URL: http://api-gateway:8090
+      SPRING_DATASOURCE_URL: jdbc:mysql://mariadb-db:3306/db_agendamiento?createDatabaseIfNotExist=true
     networks:
       - network-plenamente
     depends_on:

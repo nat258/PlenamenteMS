@@ -1,14 +1,11 @@
 server:
   port: 0
   forward-headers-strategy: framework
-  
 
 springdoc:
   api-docs:
     path: /profesionales/api-docs 
-  packages-to-scan: com.example.ms_profesionales.controller
-  hateoas:        
-    enabled: false
+  packages-to-scan: com.example.ms_profesionales.controller 
 
 eureka:
   client:
@@ -20,7 +17,7 @@ eureka:
 
 spring:
   application:
-    name: MS-PROFESIONALES # ⚠️ 
+    name: MS-PROFESIONALES 
   profiles:
     active: dev
   cloud:
@@ -63,12 +60,12 @@ spring:
 spring:
   config:
     activate:
-      on-profile: prod
+      on-profile: test
   datasource:
-    url: jdbc:mysql://${DATABASE_HOST:localhost}:3306/db_plenamente?createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true&useSSL=false
     username: root
-    password: ''
+    url: jdbc:mysql://${DATABASE_HOST:localhost}:3306/db_psicologos_test?createDatabaseIfNotExist=true
     driverClassName: com.mysql.cj.jdbc.Driver
+    password: ''
   jpa:
     hibernate:
       ddl-auto: update
@@ -87,5 +84,3 @@ spring:
   jpa:
     hibernate:
       ddl-auto: none
-
- 
