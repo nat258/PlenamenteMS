@@ -46,16 +46,15 @@ spring:
 spring:
   config:
     activate:
-      on-profile: dev
+      on-profile: prod
   datasource:
-    url: jdbc:mysql://${DATABASE_HOST:mariadb-db}:3306/db_agendamiento?createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true&useSSL=false 
+    url: jdbc:mysql://${DATABASE_HOST:localhost}:3306/db_plenamente?createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true&useSSL=false
     username: root
     password: ''
     driverClassName: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
-      ddl-auto: update 
-
+      ddl-auto: update
 ---
 
 spring:
@@ -79,9 +78,9 @@ spring:
       on-profile: prod
   datasource:
     username: root
-    url: jdbc:mysql://mariadb-db:3306/db_agendamiento_prod?createDatabaseIfNotExist=true 
+    url: jdbc:mysql://mariadb-db:3306/db_agendamiento?createDatabaseIfNotExist=true
     driverClassName: com.mysql.cj.jdbc.Driver
-    password: ''
+    password: 'root_password'
   jpa:
     hibernate:
       ddl-auto: none

@@ -63,12 +63,12 @@ spring:
 spring:
   config:
     activate:
-      on-profile: test
+      on-profile: prod
   datasource:
+    url: jdbc:mysql://${DATABASE_HOST:localhost}:3306/db_plenamente?createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true&useSSL=false
     username: root
-    url: jdbc:mysql://${DATABASE_HOST:localhost}:3306/db_psicologos_test?createDatabaseIfNotExist=true
-    driverClassName: com.mysql.cj.jdbc.Driver
     password: ''
+    driverClassName: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
       ddl-auto: update
