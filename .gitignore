@@ -1,0 +1,17 @@
+# Ignorar las carpetas de compilación de TODOS los microservicios
+**/target/
+**/build/
+
+# Ignorar binarios de Java individuales
+*.class
+*.jar
+*.war
+
+# Ignorar archivos de configuración del propio VS Code o IntelliJ
+.vscode/
+.idea/
+*.iml
+
+# Archivos del sistema operativo
+.DS_Store
+Thumbs.db
