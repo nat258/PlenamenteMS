@@ -9,7 +9,7 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: ""
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
-      # Creamos la base de datos que tu microservicio espera encontrar
+      
       MYSQL_DATABASE: db_agendamiento
     networks:
       - network-plenamente
@@ -23,7 +23,7 @@ services:
     build: ./eureka
     container_name: eureka-server
     ports:
-      - "8761:8761" # El puerto que encontramos en tu primer archivo
+      - "8761:8761" 
     networks:
       - network-plenamente
     healthcheck:
@@ -37,7 +37,7 @@ services:
     build: ./gateway
     container_name: api-gateway
     ports:
-      - "8090:8090" # <-- CORREGIDO: Cambiado de 8080 al 8090 real de tu Gateway
+      - "8090:8090" 
     environment:
       EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka-server:8761/eureka/
       SPRING_PROFILES_ACTIVE: dev
@@ -53,7 +53,7 @@ services:
     environment:
       SPRING_PROFILES_ACTIVE: dev
       EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka-server:8761/eureka/
-      # Sobrescribimos el 'localhost' por 'mariadb-db' para que Java encuentre la base de datos en Docker
+      
       SPRING_DATASOURCE_URL: jdbc:mysql://mariadb-db:3306/db_agendamiento?createDatabaseIfNotExist=true
     networks:
       - network-plenamente
