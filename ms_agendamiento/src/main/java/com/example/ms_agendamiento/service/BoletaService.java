@@ -1,7 +1,6 @@
 package com.example.ms_agendamiento.service;
 
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.ms_agendamiento.DTO.BoletaDTO;
@@ -16,11 +15,14 @@ import jakarta.transaction.Transactional;
 @Transactional
 public class BoletaService {
 
-    @Autowired
-    private BoletaRepository boletaRepository;
+    private final BoletaRepository boletaRepository;
 
-    @Autowired
-    private ReservaHoraRepository reservaHoraRepository;
+    private final ReservaHoraRepository reservaHoraRepository;
+
+    BoletaService(BoletaRepository boletaRepository, ReservaHoraRepository reservaHoraRepository) {
+        this.boletaRepository = boletaRepository;
+        this.reservaHoraRepository = reservaHoraRepository;
+    }
 
     public List<BoletaDTO>obtenerBoletas(){
         return boletaRepository.findAll().stream()

@@ -2,7 +2,6 @@ package com.example.ms_agendamiento.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -30,8 +29,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 @Tag(name = "Reservas", description = "Operaciones para el agendamiento de citas medicas")
 public class ReservaHoraController {
 
-    @Autowired
-    private ReservaHoraService reservaService;
+    private final ReservaHoraService reservaService;
+
+    ReservaHoraController(ReservaHoraService reservaService) {
+        this.reservaService = reservaService;
+    }
 
     @Operation(summary = "Obtener todas las reservas", description = "Retorna una lista de todas las reservas medicas registradas en el sistema.")
     @ApiResponses(value = {
