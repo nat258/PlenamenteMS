@@ -1,7 +1,6 @@
 package com.example.ms_agendamiento.service;
 
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
@@ -16,11 +15,14 @@ import jakarta.transaction.Transactional;
 @Transactional
 public class ReservaHoraService {
 
-    @Autowired
-    private ReservaHoraRepository reservaHoraRepository;
+    private final ReservaHoraRepository reservaHoraRepository;
 
-    @Autowired
-    private WebClient.Builder webClientBuilder;
+    private final WebClient.Builder webClientBuilder;
+
+    ReservaHoraService(ReservaHoraRepository reservaHoraRepository, WebClient.Builder webClientBuilder) {
+        this.reservaHoraRepository = reservaHoraRepository;
+        this.webClientBuilder = webClientBuilder;
+    }
 
     // Agendar reserva
     public ReservaHoraDTO guardarReserva(ReservaHoraDTO reservaDTO) {
